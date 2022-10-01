@@ -1,0 +1,32 @@
+.link {
+    text-decoration: none;
+    color: #5073b8;
+    margin: 10px;
+}
+
+.link:hover {
+    color: #c97;
+}
+
+.active {
+    color:navy;
+}
+
+.header {
+    display: flex;
+    width: 200px;
+
+    /*transition-duration: 500ms;*/
+    /*transform: translate(100px);*/
+}
+
+.show{
+    display: flex;
+    width: 200px;
+    transition-duration: 500ms;
+}
+
+.header:hover {
+    /*transition-duration: -200ms;*/
+    /*transform: translate(0);*/
+}
