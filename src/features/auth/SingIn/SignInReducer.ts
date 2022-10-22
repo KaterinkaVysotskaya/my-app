@@ -9,7 +9,7 @@ type ActionType = {
 
 }
 
-export const loginReducer = (state: InitialStateType = initState, action: ActionType): InitialStateType => { // fix any
+export const signInReducer = (state: InitialStateType = initState, action: ActionType): InitialStateType => { // fix any
     switch (action.type) {
         case '': {
             return {...state}
