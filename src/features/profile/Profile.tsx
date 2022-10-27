@@ -1,6 +1,5 @@
-import {Button, Input} from '@material-ui/core';
-import React, {ChangeEvent,  useState} from 'react';
-import {useDispatch} from "react-redux";
+import {Button, TextField} from '@material-ui/core';
+import React, { useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import {useAppSelector} from "../../common/hooks/react-redux-hooks";
 import {logoutTC} from "../auth/authReducer";
@@ -9,18 +8,33 @@ import editIcon from '../../assets/EditIcon/122705455016276482623764-128.png'
 import s from './Profile.module.css'
 import {_updateProfile} from "./ProfileReducer";
 import {useAppDispatch} from "../../app/store";
+import {useFormik} from "formik";
 
+export type FormikErrorType = {
+    userName?: string
+    photo?: string | File
+}
 function Profile() {
+    const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
+    const user = useAppSelector(state=> state.profile.userProfile)
+
+    const formik = useFormik({
+        initialValues: {
+            userName: '',
+            photo:  ''
+        },
+            validate: (values) =>{
+
+            },
+        onSubmit: values => {
+            debugger
+            dispatch(_updateProfile({name: values.userName, avatar: values.photo}))
+            formik.resetForm()
+        }})
 
     const [editMode, setEditMode] = useState(false)
 
     const dispatch = useAppDispatch()
-
-    const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
-    const user = useAppSelector(state=> state.profile.userProfile)
-
-    const [userName, setUserName] = useState<string>('')
-    const [photo, setPhoto] = useState<null | File>(null)
 
     const logOutHandler = () =>{
         dispatch(logoutTC())
@@ -28,30 +42,31 @@ function Profile() {
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
     }
-    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length) {
-            const userPhoto = e.target.files[0]
-            setPhoto(userPhoto)
-            //dispatch(_updateProfile({avatar: userPhoto}))
-        }
-    }
-
-    const onProfileNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-       setUserName(e.currentTarget.value)
-    }
-
     return (
         <div className="container">
-            <div className={s.profileBlock}>
+            <form onSubmit={formik.handleSubmit} className={s.profileBlock}>
                 <b><br/>Personal information</b>
                 <div className={s.info}>
-
                     {
                         editMode
-                        ? <Input autoFocus={true}
-                                       onBlur={() => setEditMode(false)}
-                                       value={userName}
-                                       onChange={onProfileNameChange}/>
+                        ? <div>
+                                <TextField
+                                    type='textarea'
+                                    margin="normal"
+                                    autoFocus={true}
+
+                                       {...formik.getFieldProps('userName')}
+
+                                />
+                                {formik.errors.userName && <div style={{color: 'red'}}>{formik.errors.userName}</div>}
+                                <Button
+                                        type={'submit'}
+                                        variant={'contained'}
+                                        color={'primary'}
+                                >
+                                    save
+                                </Button>
+                            </div>
                         : <div>
                             <br/> {user && user.name}
                             <img onClick={() => setEditMode(true)} src={editIcon} alt="edit"/>
@@ -61,9 +76,12 @@ function Profile() {
                 </div>
                 <div>
                     <img src={ user && user.avatar || userIcon} alt="profilePhoto"/>
-                    <Input  type="file" name='file' onChange={onMainPhotoSelected}/>
+                    <TextField  type="file"
+                            {...formik.getFieldProps('photo')}
+                    />
+                    {formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}
                 </div>
-            </div>
+            </form>
             {isLoggedIn && <Button onClick={logOutHandler} color="inherit">Log out</Button>}
         </div>
     );

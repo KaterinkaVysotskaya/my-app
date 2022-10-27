@@ -1,11 +1,11 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import React from 'react';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import {Link, Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {loginTC} from "../authReducer";
 import s from "../../../common/components/header/Header.module.css";
+import {useAppDispatch} from "../../../app/store";
 
 
 export type FormikErrorType = {
@@ -16,7 +16,7 @@ export type FormikErrorType = {
 
 function SignIn() {
     const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -38,7 +38,6 @@ function SignIn() {
             return errors
         },
         onSubmit: values => {
-            // @ts-ignore
             dispatch(loginTC(values))
             formik.resetForm()
         },

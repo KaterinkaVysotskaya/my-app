@@ -3,10 +3,12 @@ import s from './ForgotPassword.module.css'
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
-import {loginTC} from "../../../features/auth/authReducer";
+import {loginTC, resetForgotPasswordTC} from "../../../features/auth/authReducer";
 import {FormikErrorType} from "../../../features/auth/SingIn/SignIn";
+import {useAppDispatch} from "../../../app/store";
 
 function ForgotPassword() {
+    const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
             email: ''
@@ -21,8 +23,7 @@ function ForgotPassword() {
             return errors
         },
         onSubmit: values => {
-            // @ts-ignore
-            //  dispatch(loginTC(values))
+             dispatch(resetForgotPasswordTC(values.email))
             formik.resetForm()
         },
     })
@@ -32,10 +33,10 @@ function ForgotPassword() {
 
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
-                        <FormLabel>
-                            <h1>Forgot your password?</h1>
-                        </FormLabel>
                         <FormGroup>
+                            <FormLabel>
+                                <h1>Forgot your password?</h1>
+                            </FormLabel>
                             <TextField label="Email"
                                        margin="normal"
                                        {...formik.getFieldProps('email')}
@@ -43,21 +44,20 @@ function ForgotPassword() {
                             {formik.touched.email && formik.errors.email &&
                                 <div style={{color: 'red'}}>{formik.errors.email}</div>}
                             <p>Enter your email address and we will send you further instructions</p>
-                            <Button type={'submit'} variant={'contained'} color={'primary'}>
+                            <Button className = {s.sendButton} type={'submit'} variant={'contained'} color={'primary'}>
                                 Send Instructions
                             </Button>
                         </FormGroup>
                         <FormLabel>
                             <p>Did you remember your password?</p>
                             <p>
-                                <Link to={'/R'} className={s.link}>Try logging in</Link>
+                                <Link to={'/Login'} className={s.link}>Try logging in</Link>
                             </p>
 
                         </FormLabel>
                     </FormControl>
                 </form>
             </div>
-            RecoveryPassword
         </div>
     );
 }

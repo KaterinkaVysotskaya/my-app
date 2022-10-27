@@ -34,23 +34,23 @@ export type RegisterResponseType = {
 }
 export type UpdateMeParamsType = {
     name: string
-    avatar: File  // url or base64
+    avatar: File | string // url or base64
 }
 export type UpdateMeResponseType = {
     updatedUser: ResponseType
     error?: string
 }
 
-type ForgotParamsType = {
+export type ForgotParamsType = {
     email: string
     from: string
     message: string
 }
-type BaseResponseType = {
+export type BaseResponseType = {
     info: string
     error: string
 }
-type SetNewPasswordParamsType = {
+export type SetNewPasswordParamsType = {
     password: string
     resetPasswordToken: string
 }
@@ -70,7 +70,7 @@ export const authAPI = {
 
         formData.append('image', data.avatar)
 
-        return instance.put<FormData, AxiosResponse<UpdateMeResponseType>>('auth/me', formData, {
+        return instance.put<UpdateMeParamsType, AxiosResponse<UpdateMeResponseType>>('auth/me', {name: data.name, avatar: formData}, {
             headers: {
                 'Content-Type': 'form/multipart'
             }

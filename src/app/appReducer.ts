@@ -4,6 +4,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authAPI} from "../api/app-api";
 import {setIsLoggedInAC} from "../features/auth/authReducer";
 import {handleServerAppError, handleServerNetworkError} from "../common/utils/error-utils";
+import {setUserProfileAC} from "../features/profile/ProfileReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -44,6 +45,7 @@ export const initializeAppTC = () => async (dispatch: Dispatch) => {
         if (!res.data.error) {
             dispatch(setIsLoggedInAC({value: true}))
             dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(setUserProfileAC({userProfile: res.data}))
         } else {
             handleServerAppError(res.data, dispatch)
         }
