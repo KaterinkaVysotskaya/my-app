@@ -1,7 +1,8 @@
 import axios, {AxiosResponse} from "axios";
 
 export const instance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
+    // baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
     withCredentials: true
 })
 export type LoginParamsType = {
@@ -9,11 +10,11 @@ export type LoginParamsType = {
     password: string
     rememberMe: boolean
 }
-export type ResponseType = {
+export type UserProfileType = {
     _id: string
     email: string
     name: string
-    avatar: string
+    // avatar: string
     publicCardPacksCount: number // количество колод
 
     created: Date
@@ -22,14 +23,16 @@ export type ResponseType = {
     verified: boolean // подтвердил ли почту
     rememberMe: boolean
 
-    error?: string
+    token: string
+    tokenDeathTime: number
+    __v: number
 }
 export type RegisterParamsType = {
     email: string
     password: string
 }
 export type RegisterResponseType = {
-    addedUser: ResponseType
+    addedUser: UserProfileType
     error?: string
 }
 export type UpdateMeParamsType = {
@@ -37,7 +40,7 @@ export type UpdateMeParamsType = {
     avatar: File | string // url or base64
 }
 export type UpdateMeResponseType = {
-    updatedUser: ResponseType
+    updatedUser: UserProfileType
     error?: string
 }
 
@@ -57,13 +60,13 @@ export type SetNewPasswordParamsType = {
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
+        return instance.post<LoginParamsType, AxiosResponse<UserProfileType>>('auth/login', data)
     },
     logout() {
         return instance.delete<BaseResponseType>('auth/me')
     },
     me() {
-        return instance.post<ResponseType>('auth/me', {})
+        return instance.post<UserProfileType>('auth/me', {})
     },
     updateMe(data: UpdateMeParamsType) {
         const formData: FormData = new FormData()

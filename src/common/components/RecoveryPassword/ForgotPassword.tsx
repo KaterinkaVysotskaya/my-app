@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './ForgotPassword.module.css'
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField} from "@material-ui/core";
+import {Button, FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
-import {loginTC, resetForgotPasswordTC} from "../../../features/auth/authReducer";
+import {resetForgotPasswordTC} from "../../../features/auth/authReducer";
 import {FormikErrorType} from "../../../features/auth/SingIn/SignIn";
 import {useAppDispatch} from "../../../app/store";
+import CheckEmail from "../CheckEmail/CheckEmail";
 
 function ForgotPassword() {
+    const [chechEmail, setCheckEmail] = useState(false)
     const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
@@ -23,41 +25,47 @@ function ForgotPassword() {
             return errors
         },
         onSubmit: values => {
-             dispatch(resetForgotPasswordTC(values.email))
+           const res = dispatch(resetForgotPasswordTC(values.email))
+            setCheckEmail(true)
+
             formik.resetForm()
         },
     })
     return (
         <div className={s.container}>
-            <div className={s.forgotPasswordBlock}>
+            {
+                chechEmail
+                    ? <CheckEmail/>
+                    : <div className={s.forgotPasswordBlock}>
+                        <form onSubmit={formik.handleSubmit}>
+                            <FormControl>
+                                <FormGroup>
+                                    <FormLabel>
+                                        <h1>Forgot your password?</h1>
+                                    </FormLabel>
+                                    <TextField label="Email"
+                                               margin="normal"
+                                               {...formik.getFieldProps('email')}
+                                    />
+                                    {formik.touched.email && formik.errors.email &&
+                                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                                    <p>Enter your email address and we will send you further instructions</p>
+                                    <Button className={s.sendButton} type={'submit'} variant={'contained'}
+                                            color={'primary'}>
+                                        Send Instructions
+                                    </Button>
+                                </FormGroup>
+                                <FormLabel>
+                                    <p>Did you remember your password?</p>
+                                    <p>
+                                        <Link to={'/Login'} className={s.link}>Try logging in</Link>
+                                    </p>
 
-                <form onSubmit={formik.handleSubmit}>
-                    <FormControl>
-                        <FormGroup>
-                            <FormLabel>
-                                <h1>Forgot your password?</h1>
-                            </FormLabel>
-                            <TextField label="Email"
-                                       margin="normal"
-                                       {...formik.getFieldProps('email')}
-                            />
-                            {formik.touched.email && formik.errors.email &&
-                                <div style={{color: 'red'}}>{formik.errors.email}</div>}
-                            <p>Enter your email address and we will send you further instructions</p>
-                            <Button className = {s.sendButton} type={'submit'} variant={'contained'} color={'primary'}>
-                                Send Instructions
-                            </Button>
-                        </FormGroup>
-                        <FormLabel>
-                            <p>Did you remember your password?</p>
-                            <p>
-                                <Link to={'/Login'} className={s.link}>Try logging in</Link>
-                            </p>
-
-                        </FormLabel>
-                    </FormControl>
-                </form>
-            </div>
+                                </FormLabel>
+                            </FormControl>
+                        </form>
+                    </div>
+            }
         </div>
     );
 }

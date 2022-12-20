@@ -13,8 +13,8 @@ function Header() {
                 <Link to={'Register'} className={s.link }>Register</Link>
                 <Link to={'Profile'} className={s.link}>Profile</Link>
                 <Link to={'404'} className={s.link }>404</Link>
-                <Link to={'RecoveryPassword'} className={s.link }>Password recovery</Link>
-                <Link to={'EnterNewPassword'} className={s.link }>Enter new password</Link>
+                <Link to={'CheckEmail'} className={s.link }>Check Email</Link>
+                <Link to={'set-new-password'} className={s.link }>Enter new password</Link>
                 <Link to={'Test'} className={s.link }>Test</Link>
             </div>
             <div className={s.block} />

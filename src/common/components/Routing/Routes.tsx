@@ -9,6 +9,7 @@ import Test from "../Menu/Test";
 import EnterNewPassword from "../EnterNewPassword/EnterNewPassword";
 import ForgotPassword from "../RecoveryPassword/ForgotPassword";
 import Profile from "../../../features/profile/Profile";
+import CheckEmail from "../CheckEmail/CheckEmail";
 
 export const PATH = {
     PRE_JUNIOR: '/pre-junior',
@@ -21,7 +22,9 @@ function Rout() {
             <Routes>
 
                 <Route path={'Test'} element={<Test />}/>
-                <Route path={'EnterNewPassword'} element={<EnterNewPassword />}/>
+                <Route path={'CheckEmail'} element={<CheckEmail />}/>
+                <Route path={'set-new-password/*'} element={<EnterNewPassword />}/>
+                <Route path={'set-new-password/:token'} element={<EnterNewPassword />}/>
                 <Route path={'ForgotPassword'} element={<ForgotPassword />}/>
                 <Route path={"Login"}element={ <Login/>}/>
                 <Route path={"Register"}element={ <Register/>}/>

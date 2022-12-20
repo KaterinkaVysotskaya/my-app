@@ -42,7 +42,7 @@ export const initializeAppTC = () => async (dispatch: Dispatch) => {
         //if (res.data.error) { some dispatch} return }
 
 
-        if (!res.data.error) {
+        if (res.data) {
             dispatch(setIsLoggedInAC({value: true}))
             dispatch(setAppStatusAC({status: 'succeeded'}))
             dispatch(setUserProfileAC({userProfile: res.data}))

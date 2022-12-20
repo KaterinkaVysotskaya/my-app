@@ -1,9 +1,7 @@
-import {AnyAction, combineReducers, createStore} from 'redux'
-import {signInReducer} from "../features/auth/SingIn/SignInReducer";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {AnyAction, combineReducers} from 'redux'
+import thunkMiddleware, {ThunkAction} from "redux-thunk";
 import {authReducer} from "../features/auth/authReducer";
-import { configureStore } from '@reduxjs/toolkit';
-import thunkMiddleware from 'redux-thunk'
+import {configureStore} from '@reduxjs/toolkit';
 import {appReducer} from "./appReducer";
 import {profileReducer} from "../features/profile/ProfileReducer";
 import {useDispatch} from "react-redux";

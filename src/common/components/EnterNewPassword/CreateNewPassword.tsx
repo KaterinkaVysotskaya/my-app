@@ -1,14 +1,19 @@
 import React from 'react';
 import s from './EnterNewPassword.module.css'
-import {Button,  FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
+import {Button, FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {useFormik} from "formik";
 import {FormikErrorType} from "../../../features/auth/SingIn/SignIn";
 import {useAppDispatch} from "../../../app/store";
 import st from '../../styles/CommonStyles.module.css'
+import {Navigate, useParams} from "react-router-dom";
 import {setNewPassword} from "../../../features/auth/authReducer";
+import {useNavigate} from "react-router-dom";
 
 function CreateNewPassword() {
+
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+    const {token} = useParams<"token" | "id">()
     const formik = useFormik({
         initialValues: {
             password: ''
@@ -21,7 +26,12 @@ function CreateNewPassword() {
             return errors
         },
         onSubmit: values => {
-             dispatch(setNewPassword(values.password))
+            if (token) {
+                dispatch(setNewPassword({password: values.password, resetPasswordToken: token}))
+                    .then(res => {
+                        navigate("/login");
+                    })
+            }
             formik.resetForm()
         },
     })
@@ -42,7 +52,7 @@ function CreateNewPassword() {
                             {formik.touched.password && formik.errors.password &&
                                 <div style={{color: 'red'}}>{formik.errors.password}</div>}
                             <p>Create new password and we will send you further instructions to email</p>
-                            <Button className = {st.button} type={'submit'} variant={'contained'} color={'primary'}>
+                            <Button className={st.button} type={'submit'} variant={'contained'} color={'primary'}>
                                 Create new password
                             </Button>
                         </FormGroup>

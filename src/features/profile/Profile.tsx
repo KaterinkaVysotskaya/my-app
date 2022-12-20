@@ -75,7 +75,7 @@ function Profile() {
                         <br/>{user && user.email}
                 </div>
                 <div>
-                    <img src={ user && user.avatar || userIcon} alt="profilePhoto"/>
+                    <img src={ userIcon} alt="profilePhoto"/>
                     <TextField  type="file"
                             {...formik.getFieldProps('photo')}
                     />

@@ -35,12 +35,12 @@ export const {setIsLoggedInAC} = slice.actions
 export const {addedUser} = slice.actions
 
 // thunks
-export const setNewPassword = (password: string) => async (dispatch: Dispatch) => {
+export const setNewPassword = (passData: SetNewPasswordParamsType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const data = {
-            password: password,
-            resetPasswordToken: ''
+            password: passData.password,
+            resetPasswordToken: passData.resetPasswordToken
         }
         const res = await authAPI.setNewPassword(data)
         if (res.data.error) {
@@ -60,7 +60,7 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => 
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await authAPI.login(data)
-        if (!res.data.error) {
+        if (res.data) {
             dispatch(setIsLoggedInAC({value: true}))
             dispatch(setAppStatusAC({status:'succeeded'}))
             dispatch(setUserProfileAC({userProfile: res.data}))
@@ -75,17 +75,19 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => 
         }
     }
 }
+const message = `<div style="background-color: lime; padding: 15px">password recovery link:<a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>`
+
 
 export const resetForgotPasswordTC = (email: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const data = {
             email: email,
-            from: '',
-            message: `<div style="background-color: lime; padding: 15px">password recovery link:<a href='http://localhost:3000/#/set-new-password/$token$'>\tlink</a></div>` // хтмп-письмо, вместо $token$ бэк вставит токен`
+            from: 'katerinka',
+            message: `${message}`
         }
         const res = await authAPI.forgot(data)
-        if (res.data.error) {
+        if (!res.data) {
             handleServerAppError(res.data, dispatch) }
 
             dispatch(setIsLoggedInAC({value: true}))
@@ -103,7 +105,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logout()
         .then(res => {
-            if (!res.data.error) {
+            if (res.data) {
                 dispatch(setIsLoggedInAC({value: false}))
                 dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
@@ -118,7 +120,7 @@ export const registerTC = (data: RegisterParamsType) => (dispatch: Dispatch) => 
     dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.register(data)
         .then(res => {
-            if (!res.data.error) {
+            if (res.data) {
                 dispatch(addedUser({isAdded: true}))
                 dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
