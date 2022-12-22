@@ -4,7 +4,7 @@ import React from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {loginTC} from "../authReducer";
-import s from "../../../common/components/header/Header.module.css";
+import s from "../../../common/components/Menu/Menu.module.css";
 import {useAppDispatch} from "../../../app/store";
 
 
@@ -57,7 +57,7 @@ function SignIn() {
                                    margin="normal"
                                    {...formik.getFieldProps('email')}
                         />
-                        {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+
                         <TextField type="password" label="Password"
                                    margin="normal"
                                    {...formik.getFieldProps('password')}

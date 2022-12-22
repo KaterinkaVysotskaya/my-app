@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import {Link, Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {loginTC, registerTC} from "../authReducer";
-import s from "../../../common/components/header/Header.module.css";
+import s from "../../../common/components/Menu/Menu.module.css";
 
 
 type FormikErrorType = {

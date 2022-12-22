@@ -14,7 +14,8 @@
 
 .header {
     display: flex;
-    width: 200px;
+    height: 5px;
+    /*width: 200px;*/
 
     /*transition-duration: 500ms;*/
     /*transform: translate(100px);*/
@@ -22,7 +23,7 @@
 
 .show{
     display: flex;
-    width: 200px;
+    /*width: 200px;*/
     transition-duration: 500ms;
 }
 

@@ -3,12 +3,14 @@ import React, { useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import {useAppSelector} from "../../common/hooks/react-redux-hooks";
 import {logoutTC} from "../auth/authReducer";
-import userIcon from '../../assets/ProfileImg/9311412861606062171-128.png'
-import editIcon from '../../assets/EditIcon/122705455016276482623764-128.png'
+import userIcon from '../../assets/images/ProfileImg/9311412861606062171-128.png'
+import editIcon from '../../assets/images/EditIcon/122705455016276482623764-128.png'
 import s from './Profile.module.css'
 import {_updateProfile} from "./ProfileReducer";
 import {useAppDispatch} from "../../app/store";
 import {useFormik} from "formik";
+
+import FileBase64 from 'react-file-base64';
 
 export type FormikErrorType = {
     userName?: string
@@ -17,7 +19,7 @@ export type FormikErrorType = {
 function Profile() {
     const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
     const user = useAppSelector(state=> state.profile.userProfile)
-
+   const [photo, setPhoto] = useState<string | File>('')
     const formik = useFormik({
         initialValues: {
             userName: '',
@@ -28,7 +30,14 @@ function Profile() {
             },
         onSubmit: values => {
             debugger
-            dispatch(_updateProfile({name: values.userName, avatar: values.photo}))
+            let reader = new FileReader();
+            if ( typeof values.photo  !== 'string') {
+
+                reader.readAsDataURL(values.photo);
+
+            }
+            // @ts-ignore
+            dispatch(_updateProfile({name: values.userName, avatar:  reader.result}))
             formik.resetForm()
         }})
 
@@ -42,6 +51,7 @@ function Profile() {
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
     }
+
     return (
         <div className="container">
             <form onSubmit={formik.handleSubmit} className={s.profileBlock}>
@@ -77,6 +87,7 @@ function Profile() {
                 <div>
                     <img src={ userIcon} alt="profilePhoto"/>
                     <TextField  type="file"
+
                             {...formik.getFieldProps('photo')}
                     />
                     {formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}

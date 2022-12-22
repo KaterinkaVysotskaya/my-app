@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import s from './Header.module.css'
+import s from './Menu.module.css'
 import {Link} from "react-router-dom";
 
-function Header() {
+function Menu() {
     const [toggle, setToggle] = useState(false)
     return (
         <div>
@@ -22,4 +22,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default Menu;

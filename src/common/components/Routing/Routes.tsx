@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom'
 import Login from "../../../features/auth/SingIn/SignIn";
 import Register from "../../../features/auth/SingUp/Register";
 import Error404 from "../PageNotFound/Error404";
-import Test from "../Menu/Test";
+import Test from "../Main/Test";
 import EnterNewPassword from "../EnterNewPassword/EnterNewPassword";
 import ForgotPassword from "../RecoveryPassword/ForgotPassword";
 import Profile from "../../../features/profile/Profile";
