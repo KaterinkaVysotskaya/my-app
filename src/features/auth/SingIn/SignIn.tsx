@@ -1,12 +1,15 @@
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {loginTC} from "../authReducer";
-import s from "../../../common/components/Menu/Menu.module.css";
+import s from './SingIn.module.scss'
 import {useAppDispatch} from "../../../app/store";
-
+import {  InputAdornment, IconButton } from "@material-ui/core";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import {Button} from "../../../common/components/reusableComponents/button/Button";
 
 export type FormikErrorType = {
     email?: string
@@ -16,6 +19,9 @@ export type FormikErrorType = {
 
 function SignIn() {
     const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
@@ -46,21 +52,35 @@ function SignIn() {
         return <Navigate to={'/Profile'}/>
     }
     return <Grid container justifyContent={'center'}>
-        <Grid item justifyContent={'center'}>
+        <Grid item justifyContent={'center'} className={s.formContainer}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
-                    <FormLabel>
-                        <h1>Sing in</h1>
+                    <FormLabel className={s.title}>
+                        <h1 >Sing in</h1>
                     </FormLabel>
-                    <FormGroup>
+                    <FormGroup className={s.form}>
                         <TextField label="Email"
                                    margin="normal"
                                    {...formik.getFieldProps('email')}
+
                         />
 
-                        <TextField type="password" label="Password"
+                        <TextField type={showPassword ? "text" : "password"} label="Password"
                                    margin="normal"
                                    {...formik.getFieldProps('password')}
+                                   InputProps={{ // <-- This is where the toggle button is added.
+                                       endAdornment: (
+                                           <InputAdornment position="end">
+                                               <IconButton
+                                                   aria-label="toggle password visibility"
+                                                   onClick={handleClickShowPassword}
+                                                   onMouseDown={handleMouseDownPassword}
+                                               >
+                                                   {showPassword ? <Visibility /> : <VisibilityOff />}
+                                               </IconButton>
+                                           </InputAdornment>
+                                       )
+                                   }}
                         />
                         {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
                         <FormControlLabel label={'Remember me'}
@@ -69,19 +89,16 @@ function SignIn() {
                                           {...formik.getFieldProps('rememberMe')}
                         />
                         {formik.errors.rememberMe && <div style={{color: 'red'}}>{formik.errors.rememberMe}</div>}
-                        <div>
-                            <Link to={'/ForgotPassword'} className={s.link} >Forgot Password</Link>
+                        <div className={s.forgotPassword}>
+                            <Link to={'/ForgotPassword'}  >Forgot Password</Link>
                         </div>
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
-                            Sing in
-                        </Button>
+                        <Button type='submit' width={'347px'} buttonName={'Sign in'} />
                     </FormGroup>
-                    <FormLabel>
-                    <p>Already have un account?
-                        <Link to={'/Register'} className={s.link} >Sign Up</Link>
-                    </p>
-
-                </FormLabel>
+                        <div className={s.footer}>
+                            <p>Already have un account?</p>
+                            <Link to={'/Register'} className={s.SingUplink} >Sign Up
+                        </Link>
+                        </div>
                 </FormControl>
             </form>
         </Grid>

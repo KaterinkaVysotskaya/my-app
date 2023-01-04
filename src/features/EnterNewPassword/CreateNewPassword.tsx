@@ -2,11 +2,11 @@ import React from 'react';
 import s from './EnterNewPassword.module.css'
 import {Button, FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {useFormik} from "formik";
-import {FormikErrorType} from "../../../features/auth/SingIn/SignIn";
-import {useAppDispatch} from "../../../app/store";
-import st from '../../styles/CommonStyles.module.css'
+import {FormikErrorType} from "../auth/SingIn/SignIn";
+import {useAppDispatch} from "../../app/store";
+import st from '../../common/styles/CommonStyles.module.css'
 import {Navigate, useParams} from "react-router-dom";
-import {setNewPassword} from "../../../features/auth/authReducer";
+import {setNewPassword} from "../auth/authReducer";
 import {useNavigate} from "react-router-dom";
 
 function CreateNewPassword() {

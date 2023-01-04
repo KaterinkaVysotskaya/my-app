@@ -1,6 +1,6 @@
 import React from 'react';
-import Menu from "../Menu/Menu";
-import Routes from "../Routing/Routes";
+import Menu from "../../common/components/Menu/Menu";
+import Routes from "../../common/components/Routing/Routes";
 
 
 function Main() {

@@ -5,11 +5,11 @@ import { Route, Routes } from 'react-router-dom'
 import Login from "../../../features/auth/SingIn/SignIn";
 import Register from "../../../features/auth/SingUp/Register";
 import Error404 from "../PageNotFound/Error404";
-import Test from "../Main/Test";
-import EnterNewPassword from "../EnterNewPassword/EnterNewPassword";
-import ForgotPassword from "../RecoveryPassword/ForgotPassword";
+import Test from "../../../features/Main/Test";
+import EnterNewPassword from "../../../features/EnterNewPassword/EnterNewPassword";
+import ForgotPassword from "../../../features/RecoveryPassword/ForgotPassword";
 import Profile from "../../../features/profile/Profile";
-import CheckEmail from "../CheckEmail/CheckEmail";
+import CheckEmail from "../../../features/CheckEmail/CheckEmail";
 
 export const PATH = {
     PRE_JUNIOR: '/pre-junior',

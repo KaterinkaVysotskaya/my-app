@@ -73,6 +73,7 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => 
         if (axios.isAxiosError(e)) {
             handleServerNetworkError(e, dispatch)
         }
+        dispatch(setAppStatusAC({status: 'failed'}))
     }
 }
 const message = `<div style="background-color: lime; padding: 15px">password recovery link:<a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>`

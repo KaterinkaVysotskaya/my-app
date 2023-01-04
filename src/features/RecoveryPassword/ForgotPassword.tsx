@@ -3,9 +3,9 @@ import s from './ForgotPassword.module.css'
 import {Button, FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
-import {resetForgotPasswordTC} from "../../../features/auth/authReducer";
-import {FormikErrorType} from "../../../features/auth/SingIn/SignIn";
-import {useAppDispatch} from "../../../app/store";
+import {resetForgotPasswordTC} from "../auth/authReducer";
+import {FormikErrorType} from "../auth/SingIn/SignIn";
+import {useAppDispatch} from "../../app/store";
 import CheckEmail from "../CheckEmail/CheckEmail";
 
 function ForgotPassword() {
