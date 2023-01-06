@@ -2,6 +2,7 @@ import React from 'react';
 import s from './CheckEmail.module.css'
 import { FormControl,  FormGroup, FormLabel} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import {Button} from "../../common/components/reusableComponents/button/Button";
 
 
 function CheckEmail() {
@@ -17,9 +18,12 @@ function CheckEmail() {
                         </FormGroup>
                         <FormLabel>
                             <p>We’ve sent an Email with instructions to example@mail.com</p>
-                            <p>
-                                <Link to={'/Login'} className={s.link}>Back to login</Link>
-                            </p>
+
+                                <Button type='submit' width={'347px'} buttonName={'Back to login'} >
+                                    <Link to={'/Login'} className={s.link}>Back to login</Link>
+                                </Button>
+
+
 
                         </FormLabel>
                     </FormControl>

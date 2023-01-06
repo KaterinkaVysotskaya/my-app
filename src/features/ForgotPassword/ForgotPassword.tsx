@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import s from './ForgotPassword.module.css'
-import {Button, FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
+import { FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
 import {resetForgotPasswordTC} from "../auth/authReducer";
 import {FormikErrorType} from "../auth/SingIn/SignIn";
 import {useAppDispatch} from "../../app/store";
 import CheckEmail from "../CheckEmail/CheckEmail";
+import {Button} from "../../common/components/reusableComponents/button/Button";
 
 function ForgotPassword() {
     const [chechEmail, setCheckEmail] = useState(false)
@@ -50,10 +51,8 @@ function ForgotPassword() {
                                     {formik.touched.email && formik.errors.email &&
                                         <div style={{color: 'red'}}>{formik.errors.email}</div>}
                                     <p>Enter your email address and we will send you further instructions</p>
-                                    <Button className={s.sendButton} type={'submit'} variant={'contained'}
-                                            color={'primary'}>
-                                        Send Instructions
-                                    </Button>
+
+                                    <Button type='submit' width={'347px'} buttonName={'Send Instructions'} />
                                 </FormGroup>
                                 <FormLabel>
                                     <p>Did you remember your password?</p>
