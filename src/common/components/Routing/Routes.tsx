@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Login from "../../../features/auth/SingIn/SignIn";
-import Register from "../../../features/auth/SingUp/Register";
+import SignUp from "../../../features/auth/SingUp/SignUp";
 import Error404 from "../PageNotFound/Error404";
-import EnterNewPassword from "../../../features/EnterNewPassword/EnterNewPassword";
+import EnterNewPassword from "../../../features/CreateNewPassword/EnterNewPassword";
 import ForgotPassword from "../../../features/ForgotPassword/ForgotPassword";
 import Profile from "../../../features/profile/Profile";
 import CheckEmail from "../../../features/CheckEmail/CheckEmail";
@@ -23,12 +23,13 @@ function Rout() {
     return (
         <div>
             <Routes>
+                <Route path="/" element={<Profile />} />
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />}/>
                 <Route path={PATH.SET_NEW_PASSWORD+'/*'} element={<EnterNewPassword />}/>
                 <Route path={PATH.SET_NEW_PASSWORD+'/:token'} element={<EnterNewPassword />}/>
                 <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />}/>
                 <Route path={PATH.LOGIN}element={ <Login/>}/>
-                <Route path={PATH.REGISTER}element={ <Register/>}/>
+                <Route path={PATH.REGISTER}element={ <SignUp/>}/>
                 <Route path={PATH.PROFILE}
                     element={
                         <PrivateRoute>

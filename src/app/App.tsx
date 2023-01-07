@@ -10,6 +10,14 @@ import Header from "../common/components/Header/Header";
 import Menu from "../common/components/Menu/Menu";
 import Routes from "../common/components/Routing/Routes";
 
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
+`
+
 function App() {
     const dispatch = useDispatch()
     const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
@@ -29,8 +37,8 @@ function App() {
     <div className={s.container}>
         {status==='loading' && <LinearProgress className={s.linearProgress} color="secondary" />}
         <Header/>
-
-        <Routes/>
+        <GlobalStyle/>
+            <Routes/>
         <Menu/>
         <CustomizedSnackbars/>
     </div>

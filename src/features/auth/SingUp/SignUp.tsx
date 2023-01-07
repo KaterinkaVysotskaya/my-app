@@ -5,18 +5,18 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    TextField
 } from '@material-ui/core';
 import {useFormik} from 'formik';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux/es/hooks/useDispatch';
-import {Link, Navigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {registerTC} from "../authReducer";
-import s from "../../../common/components/Menu/Menu.module.css";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Button} from "../../../common/components/reusableComponents/button/Button";
+import {Footer, GridContainer, StyledButton, StyledInput, StyledLink, StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
+import {PATH} from "../../../common/components/Routing/Routes";
 
 
 type FormikErrorType = {
@@ -27,7 +27,7 @@ type FormikErrorType = {
 }
 
 
-function Register() {
+function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
 
@@ -74,19 +74,19 @@ function Register() {
         return <Navigate to={'/Profile'}/>
     }
     return <Grid container justifyContent={'center'}>
-        <Grid item justifyContent={'center'}>
+        <GridContainer item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
-                        <h1>Sing Up</h1>
+                        <StyledTitle>Sing Up</StyledTitle>
                     </FormLabel>
                     <FormGroup>
-                        <TextField label="Email"
+                        <StyledInput label="Email"
                                    margin="normal"
                                    {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
-                        <TextField  type={showPassword ? 'text' : 'password'}
+                        <StyledInput  type={showPassword ? 'text' : 'password'}
                                    label="Password"
                                    margin="normal"
                                    {...formik.getFieldProps('password')}
@@ -106,7 +106,7 @@ function Register() {
                         />
                         {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
 
-                        <TextField  type={showPassword2 ? 'text' : 'password'}
+                        <StyledInput  type={showPassword2 ? 'text' : 'password'}
                                    label="Confirm Password"
                                    margin="normal"
                                    {...formik.getFieldProps('password2')}
@@ -127,19 +127,16 @@ function Register() {
                         {formik.touched.password2 && formik.errors.password  && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
 
 
-                        <Button type='submit' width={'347px'} buttonName={'Sign in'} />
+                        <StyledButton type='submit' width={'347px'} buttonname={'Sign in'} />
                     </FormGroup>
-                    <FormLabel>
-                    <p>Already have un account?
-
-                        <Link to={'/Login'} className={s.link} >Sign in</Link>
-                    </p>
-
-                </FormLabel>
+                    <Footer>
+                    <Text>Already have un account?</Text>
+                        <StyledLink to={PATH.LOGIN}  >Sign in</StyledLink>
+                </Footer>
                 </FormControl>
             </form>
-        </Grid>
+        </GridContainer>
     </Grid>
 }
 
-export default Register;
+export default SignUp;

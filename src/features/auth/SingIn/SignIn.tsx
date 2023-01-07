@@ -1,15 +1,16 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
-import { useFormik } from 'formik';
+import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid} from '@material-ui/core';
+import {useFormik} from 'formik';
 import React, {useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import {loginTC} from "../authReducer";
-import s from './SingIn.module.scss'
 import {useAppDispatch} from "../../../app/store";
-import {  InputAdornment, IconButton } from "@material-ui/core";
+import {InputAdornment, IconButton} from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Button} from "../../../common/components/reusableComponents/button/Button";
+import {Footer, ForgotPasswordLink, GridContainer, StyledInput, StyledLink , StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
+import {PATH} from "../../../common/components/Routing/Routes";
 
 export type FormikErrorType = {
     email?: string
@@ -17,11 +18,14 @@ export type FormikErrorType = {
     rememberMe?: boolean
 }
 
+
 function SignIn() {
-    const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
     const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
@@ -29,7 +33,7 @@ function SignIn() {
             password: '',
             rememberMe: false
         },
-        validate: (values) =>{
+        validate: (values) => {
             const errors: FormikErrorType = {}
             if (!values.email) {
                 errors.email = 'Required'
@@ -52,20 +56,20 @@ function SignIn() {
         return <Navigate to={'/Profile'}/>
     }
     return <Grid container justifyContent={'center'}>
-        <Grid item justifyContent={'center'} className={s.formContainer}>
+        <GridContainer item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
-                    <FormLabel className={s.title}>
-                        <h1 >Sing in</h1>
+                    <FormLabel>
+                        <StyledTitle>Sing in</StyledTitle>
                     </FormLabel>
-                    <FormGroup className={s.form}>
-                        <TextField label="Email"
+                    <FormGroup>
+                        <StyledInput label="Email"
                                    margin="normal"
                                    {...formik.getFieldProps('email')}
 
                         />
 
-                        <TextField type={showPassword ? "text" : "password"} label="Password"
+                        <StyledInput type={showPassword ? "text" : "password"} label="Password"
                                    margin="normal"
                                    {...formik.getFieldProps('password')}
                                    InputProps={{ // <-- This is where the toggle button is added.
@@ -76,32 +80,36 @@ function SignIn() {
                                                    onClick={handleClickShowPassword}
                                                    onMouseDown={handleMouseDownPassword}
                                                >
-                                                   {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                   {showPassword ? <Visibility/> : <VisibilityOff/>}
                                                </IconButton>
                                            </InputAdornment>
                                        )
                                    }}
                         />
-                        {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                        {formik.touched.password && formik.errors.password &&
+                            <div style={{color: 'red'}}>{formik.errors.password}</div>}
                         <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox/>}
+                                          control={<Checkbox color='primary'/>}
                                           checked={formik.values.rememberMe}
                                           {...formik.getFieldProps('rememberMe')}
                         />
                         {formik.errors.rememberMe && <div style={{color: 'red'}}>{formik.errors.rememberMe}</div>}
-                        <div className={s.forgotPassword}>
-                            <Link to={'/ForgotPassword'}  >Forgot Password</Link>
-                        </div>
-                        <Button type='submit' width={'347px'} buttonName={'Sign in'} />
+
+                        <ForgotPasswordLink>
+                            <Link to={PATH.FORGOT_PASSWORD}>Forgot Password</Link>
+                        </ForgotPasswordLink>
+
+                        <Button type='submit' width={'347px'} buttonname={'Sign in'}/>
                     </FormGroup>
-                        <div className={s.footer}>
-                            <p>Already have un account?</p>
-                            <Link to={'/Register'} className={s.SingUplink} >Sign Up
-                        </Link>
-                        </div>
+
+                    <Footer >
+                        <Text>Already have un account?</Text>
+                        <StyledLink to={PATH.REGISTER}>Sign Up
+                        </StyledLink>
+                    </Footer>
                 </FormControl>
             </form>
-        </Grid>
+        </GridContainer>
     </Grid>
 }
 

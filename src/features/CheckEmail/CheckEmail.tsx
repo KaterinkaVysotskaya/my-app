@@ -1,34 +1,37 @@
 import React from 'react';
 import s from './CheckEmail.module.css'
-import { FormControl,  FormGroup, FormLabel} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
+import Link from '@material-ui/core/Link';
 import {Button} from "../../common/components/reusableComponents/button/Button";
+import {GridContainer, StyledButton, StyledTitle, Text} from "../../common/styles/FormStyles/Form.styles";
+import MailSvg from '../../assets/images/icons/mail.svg'
+import styled from "styled-components";
+import {PATH} from "../../common/components/Routing/Routes";
 
+export const SmallContainer = styled(GridContainer)`
+  width: 413px;
+  height: 408px;
+`
 
 function CheckEmail() {
     return (
-        <div className={s.container}>
-            <div className={s.forgotPasswordBlock}>
-                    <FormControl>
-                        <FormGroup>
-                            <FormLabel>
-                                <h1>Check Email</h1>
-                            </FormLabel>
-
-                        </FormGroup>
+        <Grid container justifyContent={'center'}>
+            <SmallContainer item justifyContent={'center'}>
+                <FormControl>
+                    <FormGroup>
                         <FormLabel>
-                            <p>We’ve sent an Email with instructions to example@mail.com</p>
-
-                                <Button type='submit' width={'347px'} buttonName={'Back to login'} >
-                                    <Link to={'/Login'} className={s.link}>Back to login</Link>
-                                </Button>
-
-
-
+                            <StyledTitle>Check Email</StyledTitle>
                         </FormLabel>
-                    </FormControl>
-            </div>
-        </div>
+                        <img src={MailSvg} alt="MailSvg"/>
+                    </FormGroup>
+                    <FormLabel>
+                        <Text>We’ve sent an Email with instructions to example@mail.com</Text>
+
+                        <Link href={PATH.LOGIN}><StyledButton width={'347px'} buttonname={'Back to login'}/></Link>
+                    </FormLabel>
+                </FormControl>
+            </SmallContainer>
+        </Grid>
     )
 }
 

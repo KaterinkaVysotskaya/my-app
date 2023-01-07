@@ -1,13 +1,38 @@
 import React, {useState} from 'react';
 import s from './ForgotPassword.module.css'
-import { FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
 import {useFormik} from "formik";
 import {resetForgotPasswordTC} from "../auth/authReducer";
 import {FormikErrorType} from "../auth/SingIn/SignIn";
 import {useAppDispatch} from "../../app/store";
 import CheckEmail from "../CheckEmail/CheckEmail";
-import {Button} from "../../common/components/reusableComponents/button/Button";
+import {
+    Footer,
+    GridContainer,
+    StyledButton,
+    StyledInput,
+    StyledLink,
+    StyledTitle,
+    Text,
+    Form
+} from '../../common/styles/FormStyles/Form.styles';
+import styled from 'styled-components';
+import {PATH} from "../../common/components/Routing/Routes";
+
+export const InputForgotPassword = styled(StyledInput)`
+  margin: 33px;
+`
+export const ForgotPasswordButton = styled(StyledButton)`
+  margin: 33px 33px;
+`
+
+export const StyledFormControl = styled(FormControl)`
+  margin: 33px;
+`
+const SmallContainer = styled(GridContainer)`
+  width: 413px;
+  height: 456px;
+`
 
 function ForgotPassword() {
     const [chechEmail, setCheckEmail] = useState(false)
@@ -26,47 +51,49 @@ function ForgotPassword() {
             return errors
         },
         onSubmit: values => {
-           const res = dispatch(resetForgotPasswordTC(values.email))
+            const res = dispatch(resetForgotPasswordTC(values.email))
             setCheckEmail(true)
 
             formik.resetForm()
         },
     })
-    return (
-        <div className={s.container}>
+    return <Grid container justifyContent={'center'}>
+        <SmallContainer item justifyContent={'center'}>
             {
                 chechEmail
                     ? <CheckEmail/>
-                    : <div className={s.forgotPasswordBlock}>
+                    : <div>
                         <form onSubmit={formik.handleSubmit}>
-                            <FormControl>
-                                <FormGroup>
-                                    <FormLabel>
-                                        <h1>Forgot your password?</h1>
-                                    </FormLabel>
-                                    <TextField label="Email"
-                                               margin="normal"
-                                               {...formik.getFieldProps('email')}
+                            <StyledFormControl>
+
+                                <FormLabel>
+                                    <StyledTitle>Forgot your password?</StyledTitle>
+                                </FormLabel>
+                                <Form>
+                                    <StyledInput
+
+                                        label="Email"
+                                        margin="normal"
+                                        {...formik.getFieldProps('email')}
                                     />
+
+
                                     {formik.touched.email && formik.errors.email &&
                                         <div style={{color: 'red'}}>{formik.errors.email}</div>}
-                                    <p>Enter your email address and we will send you further instructions</p>
+                                    <Text>Enter your email address and we will send you further instructions</Text>
 
-                                    <Button type='submit' width={'347px'} buttonName={'Send Instructions'} />
-                                </FormGroup>
-                                <FormLabel>
-                                    <p>Did you remember your password?</p>
-                                    <p>
-                                        <Link to={'/Login'} className={s.link}>Try logging in</Link>
-                                    </p>
-
-                                </FormLabel>
-                            </FormControl>
+                                    <ForgotPasswordButton type='submit' width={'347px'} buttonname={'Send Instructions'}/>
+                                </Form>
+                                <Footer>
+                                    <Text>Did you remember your password?</Text>
+                                    <StyledLink to={PATH.LOGIN} className={s.link}>Try logging in</StyledLink>
+                                </Footer>
+                            </StyledFormControl>
                         </form>
                     </div>
             }
-        </div>
-    );
+        </SmallContainer>
+    </Grid>
 }
 
 export default ForgotPassword;

@@ -1,51 +1,83 @@
-import {Button, TextField} from '@material-ui/core';
-import React, { useState} from 'react';
-import { Navigate } from 'react-router-dom';
+import {FormLabel, Grid, TextField} from '@material-ui/core';
+import React, {useState} from 'react';
+import {Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../common/hooks/react-redux-hooks";
 import {logoutTC} from "../auth/authReducer";
 import userIcon from '../../assets/images/ProfileImg/9311412861606062171-128.png'
-import editIcon from '../../assets/images/EditIcon/122705455016276482623764-128.png'
-import s from './Profile.module.css'
 import {_updateProfile} from "./ProfileReducer";
 import {useAppDispatch} from "../../app/store";
 import {useFormik} from "formik";
-
-import FileBase64 from 'react-file-base64';
+import styled from "styled-components";
+import {Footer, GridContainer, StyledTitle} from "../../common/styles/FormStyles/Form.styles";
+import {Button} from "../../common/components/reusableComponents/button/Button";
 
 export type FormikErrorType = {
     userName?: string
     photo?: string | File
 }
+
+
+export const SmallContainer = styled(GridContainer)`
+  width: 413px;
+  height: 360px;
+`
+
+export const ProfileData = styled.div`
+display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+export const ProfilePhoto = styled.img`
+  width: 96px;
+  height: 96px;
+  left: 593px;
+  top: 204px;
+`
+export const EditIcon = styled.img`
+  left: 46.42%;
+  right: 24.62%;
+  top: 17.92%;
+  bottom: 54.37%;
+`
+export const ProfileContainer = styled(SmallContainer)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`
+export const UserEmail = styled.div`
+margin-bottom: 29px;
+`
 function Profile() {
-    const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
-    const user = useAppSelector(state=> state.profile.userProfile)
-   const [photo, setPhoto] = useState<string | File>('')
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const user = useAppSelector(state => state.profile.userProfile)
+    const [photo, setPhoto] = useState<string | File>('')
     const formik = useFormik({
         initialValues: {
             userName: '',
-            photo:  ''
+            photo: ''
         },
-            validate: (values) =>{
+        validate: (values) => {
 
-            },
+        },
         onSubmit: values => {
             debugger
             let reader = new FileReader();
-            if ( typeof values.photo  !== 'string') {
+            if (typeof values.photo !== 'string') {
 
                 reader.readAsDataURL(values.photo);
 
             }
             // @ts-ignore
-            dispatch(_updateProfile({name: values.userName, avatar:  reader.result}))
+            dispatch(_updateProfile({name: values.userName, avatar: reader.result}))
             formik.resetForm()
-        }})
+        }
+    })
 
     const [editMode, setEditMode] = useState(false)
 
     const dispatch = useAppDispatch()
 
-    const logOutHandler = () =>{
+    const logOutHandler = () => {
         dispatch(logoutTC())
     }
     if (!isLoggedIn) {
@@ -53,48 +85,56 @@ function Profile() {
     }
 
     return (
-        <div className="container">
-            <form onSubmit={formik.handleSubmit} className={s.profileBlock}>
-                <b><br/>Personal information</b>
-                <div className={s.info}>
-                    {
-                        editMode
-                        ? <div>
-                                <TextField
-                                    type='textarea'
-                                    margin="normal"
-                                    autoFocus={true}
+        <Grid container justifyContent={'center'}>
+            <ProfileContainer item justifyContent={'center'}>
+                <form onSubmit={formik.handleSubmit} >
+                    <FormLabel>
+                        <StyledTitle>Personal Information</StyledTitle>
+                    </FormLabel>
+                    <ProfileData >
+                        <div>
+                            <ProfilePhoto src={userIcon} alt="profilePhoto"/>
+                            {/*<TextField  type="file"*/}
 
-                                       {...formik.getFieldProps('userName')}
+                            {/*            {...formik.getFieldProps('photo')}*/}
+                            {/*/>*/}
 
-                                />
-                                {formik.errors.userName && <div style={{color: 'red'}}>{formik.errors.userName}</div>}
-                                <Button
-                                        type={'submit'}
-                                        variant={'contained'}
-                                        color={'primary'}
-                                >
-                                    save
-                                </Button>
-                            </div>
-                        : <div>
-                            <br/> {user && user.name}
-                            <img onClick={() => setEditMode(true)} src={editIcon} alt="edit"/>
+                            {/*{formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}*/}
                         </div>
-                    }
-                        <br/>{user && user.email}
-                </div>
-                <div>
-                    <img src={ userIcon} alt="profilePhoto"/>
-                    <TextField  type="file"
+                        {
+                            editMode
+                                ? <div>
+                                    <TextField
+                                        type='textarea'
+                                        margin="normal"
+                                        autoFocus={true}
 
-                            {...formik.getFieldProps('photo')}
-                    />
-                    {formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}
-                </div>
-            </form>
-            {isLoggedIn && <Button onClick={logOutHandler} color="inherit">Log out</Button>}
-        </div>
+                                        {...formik.getFieldProps('userName')}
+
+                                    />
+                                    {formik.errors.userName && <div style={{color: 'red'}}>{formik.errors.userName}</div>}
+                                    <Button buttonname={'Save'}
+                                                   type={'submit'}
+                                    >
+                                    </Button>
+                                </div>
+                                : <div>
+                                    <br/> {user && user.name}
+                                    {/*<EditIcon onClick={() => setEditMode(true)} src={editIcon} alt="edit"/>*/}
+
+                                </div>
+                        }
+
+                    </ProfileData>
+                </form>
+                <Footer>
+                    <UserEmail>
+                        {user && user.email}
+                    </UserEmail>
+                <Button buttonname={'Log out'} onClick={logOutHandler}></Button>
+            </Footer>
+            </ProfileContainer>
+        </Grid>
     );
 }
 

@@ -1,14 +1,13 @@
 import React from 'react';
-import s from './EnterNewPassword.module.css'
-import { FormControl, FormGroup, FormLabel, TextField} from "@material-ui/core";
+import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
 import {useFormik} from "formik";
 import {FormikErrorType} from "../auth/SingIn/SignIn";
 import {useAppDispatch} from "../../app/store";
-import st from '../../common/styles/CommonStyles.module.css'
-import {Navigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {setNewPassword} from "../auth/authReducer";
-import {useNavigate} from "react-router-dom";
-import {Button} from "../../common/components/reusableComponents/button/Button";
+import {SmallContainer} from '../CheckEmail/CheckEmail';
+import {StyledButton, StyledInput, StyledTitle, Text} from '../../common/styles/FormStyles/Form.styles';
+import {PATH} from "../../common/components/Routing/Routes";
 
 function CreateNewPassword() {
 
@@ -30,36 +29,36 @@ function CreateNewPassword() {
             if (token) {
                 dispatch(setNewPassword({password: values.password, resetPasswordToken: token}))
                     .then(res => {
-                        navigate("/login");
+                        navigate(PATH.LOGIN);
                     })
             }
             formik.resetForm()
         },
     })
     return (
-        <div className={s.container}>
-            <div className={s.forgotPasswordBlock}>
+        <Grid container justifyContent={'center'}>
+            <SmallContainer item justifyContent={'center'}>
 
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormGroup>
                             <FormLabel>
-                                <h1>Create new password</h1>
+                                <StyledTitle>Create new password</StyledTitle>
                             </FormLabel>
-                            <TextField label="Password"
-                                       margin="normal"
-                                       {...formik.getFieldProps('password')}
+                            <StyledInput label="Password"
+                                         margin="normal"
+                                         {...formik.getFieldProps('password')}
                             />
                             {formik.touched.password && formik.errors.password &&
                                 <div style={{color: 'red'}}>{formik.errors.password}</div>}
-                            <p>Create new password and we will send you further instructions to email</p>
+                            <Text>Create new password and we will send you further instructions to email</Text>
 
-                            <Button type='submit' width={'347px'} buttonName={'Create new password'} />
+                            <StyledButton type='submit' width={'347px'} buttonname={'Create new password'}/>
                         </FormGroup>
                     </FormControl>
                 </form>
-            </div>
-        </div>
+            </SmallContainer>
+        </Grid>
     );
 }
 
