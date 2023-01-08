@@ -1,10 +1,7 @@
-import axios, {AxiosResponse} from "axios";
+import  {AxiosResponse} from "axios";
+import {instance} from "./instance";
 
-export const instance = axios.create({
-    // baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
-    baseURL: 'http://localhost:7542/2.0/',
-    withCredentials: true
-})
+
 export type LoginParamsType = {
     email: string
     password: string

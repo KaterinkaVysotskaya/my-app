@@ -1,12 +1,10 @@
 import React from 'react';
-import s from './CheckEmail.module.css'
 import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
 import Link from '@material-ui/core/Link';
-import {Button} from "../../common/components/reusableComponents/button/Button";
-import {GridContainer, StyledButton, StyledTitle, Text} from "../../common/styles/FormStyles/Form.styles";
-import MailSvg from '../../assets/images/icons/mail.svg'
+import {GridContainer, StyledButton, StyledTitle, Text} from "../../../common/styles/FormStyles/Form.styles";
+import MailSvg from '../../../assets/images/icons/mail.svg'
 import styled from "styled-components";
-import {PATH} from "../../common/components/Routing/Routes";
+import {PATH} from "../../../common/components/Routing/Routes";
 
 export const SmallContainer = styled(GridContainer)`
   width: 413px;

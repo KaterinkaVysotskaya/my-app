@@ -2,11 +2,10 @@ import axios from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     authAPI,
-    ForgotParamsType,
     LoginParamsType,
     RegisterParamsType,
     SetNewPasswordParamsType
-} from "../../api/app-api";
+} from "../../api/auth-api";
 import {Dispatch} from "redux";
 import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
 import {setAppStatusAC} from "../../app/appReducer";

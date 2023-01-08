@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import axios from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authAPI} from "../api/app-api";
+import {authAPI} from "../api/auth-api";
 import {setIsLoggedInAC} from "../features/auth/authReducer";
 import {handleServerAppError, handleServerNetworkError} from "../common/utils/error-utils";
 import {setUserProfileAC} from "../features/profile/ProfileReducer";

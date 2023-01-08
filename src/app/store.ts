@@ -5,15 +5,14 @@ import {configureStore} from '@reduxjs/toolkit';
 import {appReducer} from "./appReducer";
 import {profileReducer} from "../features/profile/ProfileReducer";
 import {useDispatch} from "react-redux";
+import {packsReducer} from "../features/packs/packsReducer";
 
 
 const rootReducer = combineReducers({
     auth: authReducer,
     app: appReducer,
-    profile: profileReducer
-    // signIn: signInReducer,
-    // signUp: signUpReducer
-    // profile: profileReducer,
+    profile: profileReducer,
+    packs: packsReducer
 
 })
 const store = configureStore({

@@ -1,13 +1,11 @@
 import React from 'react';
-import s from './Header.module.css'
 import logoSVG from '../../../assets/images/icons/it-incubator.svg'
 import {useAppSelector} from "../../hooks/react-redux-hooks";
 import {Button} from "../reusableComponents/button/Button";
 import userIcon from '../../../assets/images/ProfileImg/9311412861606062171-128.png'
 import Link from '@material-ui/core/Link';
-import {HeaderContainer, ProfileAvatar, ProfileData, ProfileName } from './Header.styles';
+import {HeaderContainer, ProfileAvatar, ProfileData, ProfileName} from './Header.styles';
 import {PATH} from "../Routing/Routes";
-
 
 
 function Header() {

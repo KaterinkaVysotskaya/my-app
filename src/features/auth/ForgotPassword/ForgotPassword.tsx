@@ -1,23 +1,22 @@
 import React, {useState} from 'react';
-import s from './ForgotPassword.module.css'
-import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
+import {FormControl, FormLabel, Grid} from "@material-ui/core";
 import {useFormik} from "formik";
-import {resetForgotPasswordTC} from "../auth/authReducer";
-import {FormikErrorType} from "../auth/SingIn/SignIn";
-import {useAppDispatch} from "../../app/store";
+import {resetForgotPasswordTC} from "../authReducer";
+import {FormikErrorType} from "../SingIn/SignIn";
+import {useAppDispatch} from "../../../app/store";
 import CheckEmail from "../CheckEmail/CheckEmail";
 import {
     Footer,
+    Form,
     GridContainer,
     StyledButton,
     StyledInput,
     StyledLink,
     StyledTitle,
-    Text,
-    Form
-} from '../../common/styles/FormStyles/Form.styles';
+    Text
+} from '../../../common/styles/FormStyles/Form.styles';
 import styled from 'styled-components';
-import {PATH} from "../../common/components/Routing/Routes";
+import {PATH} from "../../../common/components/Routing/Routes";
 
 export const InputForgotPassword = styled(StyledInput)`
   margin: 33px;
@@ -58,7 +57,7 @@ function ForgotPassword() {
         },
     })
     return <Grid container justifyContent={'center'}>
-        <SmallContainer item justifyContent={'center'}>
+        <SmallContainer item style={{justifyContent:"center"}}>
             {
                 chechEmail
                     ? <CheckEmail/>
@@ -70,12 +69,15 @@ function ForgotPassword() {
                                     <StyledTitle>Forgot your password?</StyledTitle>
                                 </FormLabel>
                                 <Form>
-                                    <StyledInput
+                                    <div style={{padding: '0px 30px'}}>
+                                        <StyledInput
 
-                                        label="Email"
-                                        margin="normal"
-                                        {...formik.getFieldProps('email')}
-                                    />
+                                            label="Email"
+                                            margin="normal"
+                                            {...formik.getFieldProps('email')}
+                                        />
+                                    </div>
+
 
 
                                     {formik.touched.email && formik.errors.email &&
@@ -86,7 +88,7 @@ function ForgotPassword() {
                                 </Form>
                                 <Footer>
                                     <Text>Did you remember your password?</Text>
-                                    <StyledLink to={PATH.LOGIN} className={s.link}>Try logging in</StyledLink>
+                                    <StyledLink to={PATH.LOGIN}>Try logging in</StyledLink>
                                 </Footer>
                             </StyledFormControl>
                         </form>

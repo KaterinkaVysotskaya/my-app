@@ -15,6 +15,7 @@ function Menu() {
                 <Link to={PATH.PROFILE} className={s.link}>Profile</Link>
                 <Link to={'404'} className={s.link }>404</Link>
                 <Link to={PATH.CHECK_EMAIL} className={s.link }>Check Email</Link>
+                <Link to={PATH.PACKSLIST} className={s.link }>Packslist</Link>
                 <Link to={PATH.SET_NEW_PASSWORD} className={s.link }>Enter new password</Link><Link to={PATH.FORGOT_PASSWORD} className={s.link }>Forgot your password</Link>
             </div>
             <div className={s.block} />

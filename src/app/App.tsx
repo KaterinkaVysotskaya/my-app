@@ -10,7 +10,7 @@ import Header from "../common/components/Header/Header";
 import Menu from "../common/components/Menu/Menu";
 import Routes from "../common/components/Routing/Routes";
 
-import { createGlobalStyle } from 'styled-components'
+import {createGlobalStyle} from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -20,29 +20,33 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
     const dispatch = useDispatch()
-    const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
-    const isInitialized = useAppSelector(state=>state.app.isInitialized)
-    const status = useAppSelector(state=>state.app.status)
-    useEffect(()=>{
+
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const status = useAppSelector(state => state.app.status)
+
+    useEffect(() => {
         // @ts-ignore
         dispatch(initializeAppTC())
     }, [])
+
     if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
         </div>
     }
-  return (
-    <div className={s.container}>
-        {status==='loading' && <LinearProgress className={s.linearProgress} color="secondary" />}
-        <Header/>
-        <GlobalStyle/>
-            <Routes/>
-        <Menu/>
-        <CustomizedSnackbars/>
-    </div>
-  );
+    return (<>
+            {status === 'loading' && <LinearProgress className={s.linearProgress} color="secondary"/>}
+
+            <div className={s.container}>
+                <Header/>
+                <GlobalStyle/>
+                <Routes/>
+                <Menu/>
+                <CustomizedSnackbars/>
+            </div>
+        </>
+    );
 }
 
 export default App;

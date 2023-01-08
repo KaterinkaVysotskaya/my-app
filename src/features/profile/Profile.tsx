@@ -48,7 +48,6 @@ export const UserEmail = styled.div`
 margin-bottom: 29px;
 `
 function Profile() {
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const user = useAppSelector(state => state.profile.userProfile)
     const [photo, setPhoto] = useState<string | File>('')
     const formik = useFormik({
@@ -80,13 +79,10 @@ function Profile() {
     const logOutHandler = () => {
         dispatch(logoutTC())
     }
-    if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
-    }
 
     return (
         <Grid container justifyContent={'center'}>
-            <ProfileContainer item justifyContent={'center'}>
+            <ProfileContainer item style={{justifyContent:"center"}}>
                 <form onSubmit={formik.handleSubmit} >
                     <FormLabel>
                         <StyledTitle>Personal Information</StyledTitle>

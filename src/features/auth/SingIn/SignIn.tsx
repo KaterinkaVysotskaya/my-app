@@ -42,8 +42,8 @@ function SignIn() {
             }
             if (!values.password) {
                 errors.password = 'Required'
-            } else if (values.password.length < 2) {
-                errors.password = 'Must be 2 characters or more'
+            } else if (values.password.length < 8) {
+                errors.password = 'Must be 8 characters or more'
             }
             return errors
         },
@@ -56,7 +56,7 @@ function SignIn() {
         return <Navigate to={'/Profile'}/>
     }
     return <Grid container justifyContent={'center'}>
-        <GridContainer item justifyContent={'center'}>
+        <GridContainer item style={{justifyContent:"center"}}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
@@ -68,6 +68,7 @@ function SignIn() {
                                    {...formik.getFieldProps('email')}
 
                         />
+                        {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
 
                         <StyledInput type={showPassword ? "text" : "password"} label="Password"
                                    margin="normal"

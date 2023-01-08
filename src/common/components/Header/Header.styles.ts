@@ -3,7 +3,8 @@ import styled from "styled-components";
 export  const ProfileData = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 230px;
+  width: 260px;
+  align-items: center;
 `
 export const HeaderContainer = styled.div`
   height: 60px;

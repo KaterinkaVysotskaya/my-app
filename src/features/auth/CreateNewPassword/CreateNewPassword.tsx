@@ -1,13 +1,15 @@
 import React from 'react';
 import {FormControl, FormGroup, FormLabel, Grid} from "@material-ui/core";
 import {useFormik} from "formik";
-import {FormikErrorType} from "../auth/SingIn/SignIn";
-import {useAppDispatch} from "../../app/store";
+import {FormikErrorType} from "../SingIn/SignIn";
+import {useAppDispatch} from "../../../app/store";
 import {useNavigate, useParams} from "react-router-dom";
-import {setNewPassword} from "../auth/authReducer";
+import {setNewPassword} from "../authReducer";
 import {SmallContainer} from '../CheckEmail/CheckEmail';
-import {StyledButton, StyledInput, StyledTitle, Text} from '../../common/styles/FormStyles/Form.styles';
-import {PATH} from "../../common/components/Routing/Routes";
+import {StyledButton, StyledInput, StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
+import {PATH} from "../../../common/components/Routing/Routes";
+
+
 
 function CreateNewPassword() {
 
@@ -37,7 +39,7 @@ function CreateNewPassword() {
     })
     return (
         <Grid container justifyContent={'center'}>
-            <SmallContainer item justifyContent={'center'}>
+            <SmallContainer item style={{justifyContent:"center"}}>
 
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
@@ -45,10 +47,14 @@ function CreateNewPassword() {
                             <FormLabel>
                                 <StyledTitle>Create new password</StyledTitle>
                             </FormLabel>
-                            <StyledInput label="Password"
-                                         margin="normal"
-                                         {...formik.getFieldProps('password')}
-                            />
+                            <div style={{padding: '0px 30px'}}>
+                                <StyledInput label="Password"
+                                             margin="normal"
+                                             {...formik.getFieldProps('password')}
+                                />
+                            </div>
+
+
                             {formik.touched.password && formik.errors.password &&
                                 <div style={{color: 'red'}}>{formik.errors.password}</div>}
                             <Text>Create new password and we will send you further instructions to email</Text>

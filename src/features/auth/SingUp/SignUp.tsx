@@ -74,7 +74,7 @@ function SignUp() {
         return <Navigate to={'/Profile'}/>
     }
     return <Grid container justifyContent={'center'}>
-        <GridContainer item justifyContent={'center'}>
+        <GridContainer item style={{justifyContent:"center"}}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
@@ -127,7 +127,7 @@ function SignUp() {
                         {formik.touched.password2 && formik.errors.password  && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
 
 
-                        <StyledButton type='submit' width={'347px'} buttonname={'Sign in'} />
+                        <StyledButton type='submit' width={'347px'} buttonname={'Sign up'} />
                     </FormGroup>
                     <Footer>
                     <Text>Already have un account?</Text>
