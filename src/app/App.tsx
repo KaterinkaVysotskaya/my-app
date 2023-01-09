@@ -1,16 +1,14 @@
-import React, {useEffect} from 'react';
-import './App.css';
+import React, {useEffect} from 'react'
 import {useDispatch} from "react-redux/es/hooks/useDispatch";
 import {useAppSelector} from "../common/hooks/react-redux-hooks";
 import {initializeAppTC} from "./appReducer";
 import {CircularProgress, LinearProgress} from '@material-ui/core';
 import CustomizedSnackbars from '../common/components/ErrorSnackBar/ErrorSnackBar';
-import s from '../common/styles/AppContainer.module.css'
 import Header from "../common/components/Header/Header";
 import Menu from "../common/components/Menu/Menu";
-import Routes from "../common/components/Routing/Routes";
 
 import {createGlobalStyle} from 'styled-components'
+import {Main} from "../common/components/Main/Main";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -36,12 +34,12 @@ function App() {
         </div>
     }
     return (<>
-            {status === 'loading' && <LinearProgress className={s.linearProgress} color="secondary"/>}
+            {status === 'loading' && <LinearProgress  color="secondary"/>}
 
-            <div className={s.container}>
+            <div>
                 <Header/>
                 <GlobalStyle/>
-                <Routes/>
+                <Main/>
                 <Menu/>
                 <CustomizedSnackbars/>
             </div>
@@ -50,3 +48,4 @@ function App() {
 }
 
 export default App;
+

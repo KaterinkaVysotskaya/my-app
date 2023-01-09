@@ -10,6 +10,9 @@ import {useFormik} from "formik";
 import styled from "styled-components";
 import {Footer, GridContainer, StyledTitle} from "../../common/styles/FormStyles/Form.styles";
 import {Button} from "../../common/components/reusableComponents/button/Button";
+import editIcon from '../../assets/images/EditIcon/122705455016276482623764-128.png'
+import BackToPackListsButton
+    from "../../common/components/reusableComponents/BackToPacksListButton/BackToPackListsButton";
 
 export type FormikErrorType = {
     userName?: string
@@ -23,7 +26,7 @@ export const SmallContainer = styled(GridContainer)`
 `
 
 export const ProfileData = styled.div`
-display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 `
@@ -34,10 +37,9 @@ export const ProfilePhoto = styled.img`
   top: 204px;
 `
 export const EditIcon = styled.img`
-  left: 46.42%;
-  right: 24.62%;
-  top: 17.92%;
-  bottom: 54.37%;
+  width: 16px;
+  height: 16px;
+  padding-left: 4px;
 `
 export const ProfileContainer = styled(SmallContainer)`
   display: flex;
@@ -45,8 +47,15 @@ export const ProfileContainer = styled(SmallContainer)`
   justify-content: space-around;
 `
 export const UserEmail = styled.div`
-margin-bottom: 29px;
+  margin-bottom: 29px;
+  padding-top: 23px;
 `
+
+export const EditMode = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 function Profile() {
     const user = useAppSelector(state => state.profile.userProfile)
     const [photo, setPhoto] = useState<string | File>('')
@@ -81,56 +90,62 @@ function Profile() {
     }
 
     return (
-        <Grid container justifyContent={'center'}>
-            <ProfileContainer item style={{justifyContent:"center"}}>
-                <form onSubmit={formik.handleSubmit} >
-                    <FormLabel>
-                        <StyledTitle>Personal Information</StyledTitle>
-                    </FormLabel>
-                    <ProfileData >
-                        <div>
-                            <ProfilePhoto src={userIcon} alt="profilePhoto"/>
-                            {/*<TextField  type="file"*/}
+        <>
+            <BackToPackListsButton/>
+            <Grid container justifyContent={'center'}>
 
-                            {/*            {...formik.getFieldProps('photo')}*/}
-                            {/*/>*/}
+                <ProfileContainer item style={{justifyContent: "center"}}>
 
-                            {/*{formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}*/}
-                        </div>
-                        {
-                            editMode
-                                ? <div>
-                                    <TextField
-                                        type='textarea'
-                                        margin="normal"
-                                        autoFocus={true}
+                    <form onSubmit={formik.handleSubmit}>
+                        <FormLabel>
+                            <StyledTitle>Personal Information</StyledTitle>
+                        </FormLabel>
+                        <ProfileData>
+                            <div>
+                                <ProfilePhoto src={userIcon} alt="profilePhoto"/>
+                                {/*<TextField  type="file"*/}
 
-                                        {...formik.getFieldProps('userName')}
+                                {/*            {...formik.getFieldProps('photo')}*/}
+                                {/*/>*/}
 
-                                    />
-                                    {formik.errors.userName && <div style={{color: 'red'}}>{formik.errors.userName}</div>}
-                                    <Button buttonname={'Save'}
-                                                   type={'submit'}
-                                    >
-                                    </Button>
-                                </div>
-                                : <div>
-                                    <br/> {user && user.name}
-                                    {/*<EditIcon onClick={() => setEditMode(true)} src={editIcon} alt="edit"/>*/}
+                                {/*{formik.errors.photo && <div style={{color: 'red'}}>{formik.errors.photo}</div>}*/}
+                            </div>
+                            {
+                                editMode
+                                    ? <EditMode>
+                                        <TextField
+                                            type='textarea'
+                                            margin="normal"
+                                            autoFocus={true}
 
-                                </div>
-                        }
+                                            {...formik.getFieldProps('userName')}
 
-                    </ProfileData>
-                </form>
-                <Footer>
-                    <UserEmail>
-                        {user && user.email}
-                    </UserEmail>
-                <Button buttonname={'Log out'} onClick={logOutHandler}></Button>
-            </Footer>
-            </ProfileContainer>
-        </Grid>
+                                        />
+                                        {formik.errors.userName && <div style={{color: 'red'}}>{formik.errors.userName}</div>}
+                                        <Button buttonname={'Save'}
+                                                type={'submit'}
+                                        >
+                                        </Button>
+                                    </EditMode>
+                                    : <div>
+                                        {user && user.name}
+                                        <EditIcon onClick={() => setEditMode(true)} src={editIcon} alt="edit"/>
+
+                                    </div>
+                            }
+
+                        </ProfileData>
+                    </form>
+                    <Footer>
+                        <UserEmail>
+                            {user && user.email}
+                        </UserEmail>
+                        <Button buttonname={'Log out'} onClick={logOutHandler}></Button>
+                    </Footer>
+                </ProfileContainer>
+            </Grid>
+        </>
+
     );
 }
 
