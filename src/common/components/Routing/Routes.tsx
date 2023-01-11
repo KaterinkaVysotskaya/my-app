@@ -25,7 +25,7 @@ function Rout() {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Profile />} />
+                <Route path="/" element={<Login />} />
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />}/>
                 <Route path={PATH.SET_NEW_PASSWORD+'/*'} element={<EnterNewPassword />}/>
                 <Route path={PATH.SET_NEW_PASSWORD+'/:token'} element={<EnterNewPassword />}/>

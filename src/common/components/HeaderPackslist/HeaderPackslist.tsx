@@ -20,7 +20,7 @@ export const HeaderPacks = ({title, buttonName}: HeaderPacksType) => {
 
     const onClickHandler = () =>{
         // @ts-ignore
-        dispatch(getPacksTC())
+
     }
     return (
         <HeaderPacksBlock >

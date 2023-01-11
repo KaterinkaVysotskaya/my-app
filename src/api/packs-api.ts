@@ -14,19 +14,23 @@ type GetPackParamType = {
 export type PackType = {
     _id: string
     user_id: string
+    user_name: string
+    private: boolean
     name: string
     path: string// папка
     cardsCount: number
     grade: number// средняя оценка карточек
     shots: number // количество попыток
+    deckCover: 'url | base64'
     rating: number // лайки
     type: string // ещё будет "folder" (папка)
-    created: Date
-    updated: Date
+    created: string
+    updated: string
+    more_id: string
     __v: number
 }
 
-type CardPacksResponseType = {
+export type CardPacksResponseType = {
     cardPacks: PackType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number

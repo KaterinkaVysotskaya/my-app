@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {packsAPI, PackType} from "../../api/packs-api";
+import {CardPacksResponseType, packsAPI, PackType} from "../../api/packs-api";
 import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
@@ -27,14 +27,16 @@ export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, thunk
 
 const slice = createSlice({
     name: 'packs',
-    initialState: [] as Array<PackType>,
+    initialState: {} as CardPacksResponseType,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getPacksTC.fulfilled, (state, action) => {
-            // if (action.payload)
-                // action.payload.packs.forEach((tl: any) => {
-                //     state[tl.id] = []
-        })}
+                if (action.payload)
+                    return action.payload.packs
+
+            }
+        )
+    }
 
 })
 
