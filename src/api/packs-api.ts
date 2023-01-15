@@ -1,5 +1,6 @@
 import {instance} from "./instance";
 import {AxiosResponse} from "axios";
+import {LoginParamsType, RegisterResponseType} from "./auth-api";
 
 
 type GetPackParamType = {
@@ -30,7 +31,7 @@ export type PackType = {
     __v: number
 }
 
-export type CardPacksResponseType = {
+export type CardPacksBase = {
     cardPacks: PackType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
@@ -38,9 +39,29 @@ export type CardPacksResponseType = {
     page: number // выбранная страница
     pageCount: number // количество элементов на странице
 }
+export type NewCardsPackType = {
+    name?: string
+    path?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    deckCover?: "url or base64"
+    private?: boolean
+    type?: string
+}
+export type ChangedCardsPackType = {
+    _id: string
+    name: string
+}
+export type BaseResponseType = {
+    newCardsPack: PackType
+    token: string
+    tokenDeathTime: number
+}
+
 export const packsAPI = {
     getPacks() {
-        return instance.get<CardPacksResponseType>('cards/pack', {
+        return instance.get<CardPacksBase>('cards/pack', {
            params: {
                 // packName: data.packName,
                 // min: data.min,
@@ -51,5 +72,18 @@ export const packsAPI = {
                 // user_id: data.user_id
             }
         })
+    },
+    addPacks(cardsPack: NewCardsPackType) {
+        return instance.post<NewCardsPackType, AxiosResponse<BaseResponseType>>('/cards/pack', {cardsPack: cardsPack})
+    },
+    deletePacks(id: string) {
+        return instance.delete(`/cards/pack/`, {
+            params: {
+                id: id
+            }
+        })
+    },
+    updatePacks(ChangedCardsPack: ChangedCardsPackType) {
+        return instance.put('/cards/pack',{cardsPack: ChangedCardsPack})
     }
 }
