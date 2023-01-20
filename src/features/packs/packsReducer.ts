@@ -1,8 +1,10 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {CardPacksBase, ChangedCardsPackType, NewCardsPackType, packsAPI, PackType} from "../../api/packs-api";
 import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
+
+
 
 export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
@@ -88,10 +90,24 @@ export const updatePacksTC = createAsyncThunk('packs/updatePacks', async (Change
         }
     }
 )
+
 const slice = createSlice({
     name: 'packs',
-    initialState: {} as CardPacksBase,
-    reducers: {},
+    initialState: {} as CardPacksBase ,
+    reducers: {
+        setPage(state, action: PayloadAction<{page: number}>){
+            state.page = action.payload.page
+        },
+        setPageCount(state, action: PayloadAction<{pageCount: number}>) {
+            state.pageCount = action.payload.pageCount
+        },
+        showMyPacks(state, action: PayloadAction<{isMyPacks: boolean}>) {
+            state.isMyPacks = action.payload.isMyPacks
+            if(state.isMyPacks) {
+                // state.myPacks = state.cardPacks.filter(p=>p.user_id === profile.userProfile?._id)
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getPacksTC.fulfilled, (state, action) => {
                 if (action.payload) return action.payload.packs
@@ -126,3 +142,6 @@ const slice = createSlice({
 
 
 export const packsReducer = slice.reducer
+export const {
+    setPage, setPageCount, showMyPacks
+} = slice.actions

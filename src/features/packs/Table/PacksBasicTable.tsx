@@ -13,7 +13,7 @@ import learnIcon from '../../../assets/images/icons/teacher.svg'
 import deleteIcon from '../../../assets/images/icons/Delete.svg'
 import editIcon from '../../../assets/images/icons/Edit.svg'
 import {useDispatch} from "react-redux/es/hooks/useDispatch";
-import {deletePacksTC, updatePacksTC} from "../packsReducer";
+import {deletePacksTC, setPage, setPageCount, updatePacksTC} from "../packsReducer";
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -36,24 +36,28 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
 }));
 
 export function BasicTable() {
-    const packsData = useAppSelector(state => state.packs)
     const profileId = useAppSelector(state => state.profile.userProfile?._id)
+    const packsData = useAppSelector(state => state.packs)
+
 
     const dispatch = useDispatch()
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    // const [page, setPage] = React.useState(0);
+    // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+       dispatch(setPage({page: newPage})) ;
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
+       dispatch(setPageCount({pageCount: +event.target.value})) ;
+        dispatch(setPage({page: 1}));
     };
 
     const packs = useAppSelector(state => state.packs.cardPacks)
+    const myPacks = packs && packs.filter(p=>p.user_id === p._id)
+    const showPacks = !packsData.isMyPacks ? packs : myPacks
+
     const deletePackHandler = () => {
         debugger
         // @ts-ignore
@@ -73,8 +77,8 @@ export function BasicTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {packs && packs
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        { packs  &&  packs
+                            .slice(packsData.page * packsData.pageCount, packsData.page * packsData.pageCount + packsData.pageCount)
                             .map((packs) => (
                                 <StyledTableRow key={packs._id}>
                                     <StyledTableCell align="left">
@@ -118,7 +122,7 @@ export function BasicTable() {
                 component="div"
                 count={packsData.cardPacksTotalCount}
                 rowsPerPage={packsData.pageCount}
-                page={page}
+                page={packsData.page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 // showFirstButton={true}

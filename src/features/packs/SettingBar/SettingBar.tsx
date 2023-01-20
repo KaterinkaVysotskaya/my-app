@@ -4,6 +4,9 @@ import SearchIcon from "@material-ui/icons/Search";
 import Slider from "@material-ui/core/Slider";
 import RemoveIcon from "../../../assets/images/icons/Filter-Remove.png";
 import {Box, SettingsContainer, SliderContainer, Title, ToolContainer } from "./styes.settingsBar";
+import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
+import {showMyPacks} from "../packsReducer";
+import {useDispatch} from "react-redux/es/hooks/useDispatch";
 
 
 
@@ -47,13 +50,14 @@ export function CustomizedInputBase() {
 }
 
 export const ShowMyAllPacks = ({title}: ToolPropsType) => {
+    const dispatch = useDispatch()
     return (
         <ToolContainer width={'196px'}>
             <Title>{title}</Title>
             <div>
                 <ButtonGroup color='primary' aria-label="outlined primary button group">
-                    <Button>My</Button>
-                    <Button>All</Button>
+                    <Button onClick={()=>dispatch(showMyPacks({ isMyPacks: true}))}>My</Button>
+                    <Button onClick={()=>dispatch(showMyPacks({ isMyPacks: false}))}>All</Button>
                 </ButtonGroup>
             </div>
 
@@ -64,6 +68,7 @@ export const ShowMyAllPacks = ({title}: ToolPropsType) => {
 
 export const SliderSettings = ({title}: ToolPropsType) => {
     const [value, setValue] = React.useState<number | number[]>([20, 37]);
+    const packsData = useAppSelector(state => state.packs)
 
     const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
         setValue(newValue);
@@ -77,15 +82,17 @@ export const SliderSettings = ({title}: ToolPropsType) => {
         <ToolContainer width={'413px'}>
             <Title>{title}</Title>
             <SliderContainer>
-                <Box>min</Box>
+                <Box>{packsData.minCardsCount}</Box>
                 <Slider
                     value={value}
                     onChange={handleChange}
                     valueLabelDisplay="auto"
                     aria-labelledby="range-slider"
                     getAriaValueText={valuetext}
+                    min={packsData.minCardsCount}
+                    max={packsData.maxCardsCount}
                 />
-                <Box>max</Box>
+                <Box>{packsData.maxCardsCount}</Box>
             </SliderContainer>
 
         </ToolContainer>

@@ -30,15 +30,19 @@ export type PackType = {
     more_id: string
     __v: number
 }
-
-export type CardPacksBase = {
+type  SettingsType = {
+    isMyPacks: boolean
+    myPacks: PackType[]
+}
+export type CardPacksBase  = {
     cardPacks: PackType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
     page: number // выбранная страница
     pageCount: number // количество элементов на странице
-}
+} & SettingsType
+
 export type NewCardsPackType = {
     name?: string
     path?: string
