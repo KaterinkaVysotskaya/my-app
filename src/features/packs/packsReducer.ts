@@ -3,15 +3,18 @@ import {CardPacksBase, ChangedCardsPackType, NewCardsPackType, packsAPI, PackTyp
 import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
+import {AppStoreType} from "../../app/store";
 
 
 
-export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, thunkAPI) => {
-        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, {dispatch, getState, rejectWithValue}) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const res = await packsAPI.getPacks()
+            const state = getState() as AppStoreType
+            const {pageCount, page, sort, search, isMyPacks} = state.packs
+            const res = await packsAPI.getPacks({pageCount, page, sort, search})
             console.log(res, 'res')
-            thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(setAppStatusAC({status: 'succeeded'}))
             return {packs: res.data}
         } catch (error) {
             const e = error as Error | AxiosError
@@ -19,10 +22,10 @@ export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, thunk
                 const error = e.response?.data
                     ? (e.response.data as { error: string }).error
                     : e.message
-                thunkAPI.dispatch(setAppErrorAC({error: error}))
-                return thunkAPI.rejectWithValue({errors: [e.message], fieldsErrors: undefined})
+                dispatch(setAppErrorAC({error: error}))
+                return rejectWithValue({errors: [e.message], fieldsErrors: undefined})
             }
-            handleServerNetworkError(e, thunkAPI.dispatch)
+            handleServerNetworkError(e, dispatch)
         }
     }
 )
@@ -51,8 +54,10 @@ export const deletePacksTC = createAsyncThunk('packs/deletePacks', async (id: st
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
 
         try {
+            const state = thunkAPI.getState() as AppStoreType
+            const {pageCount, page, sort, search, isMyPacks} = state.packs
             const res = await packsAPI.deletePacks(id)
-            const res2 = await packsAPI.getPacks()
+            const res2 = await packsAPI.getPacks({pageCount, page, sort, search})
             console.log(res, 'res')
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return {id}
@@ -106,6 +111,9 @@ const slice = createSlice({
             if(state.isMyPacks) {
                 // state.myPacks = state.cardPacks.filter(p=>p.user_id === profile.userProfile?._id)
             }
+        },
+        searchPacks(state, action: PayloadAction<{search: string}>) {
+            state.search = action.payload.search
         }
     },
     extraReducers: (builder) => {
@@ -143,5 +151,5 @@ const slice = createSlice({
 
 export const packsReducer = slice.reducer
 export const {
-    setPage, setPageCount, showMyPacks
+    setPage, setPageCount, showMyPacks, searchPacks
 } = slice.actions

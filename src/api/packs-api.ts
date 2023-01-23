@@ -31,6 +31,10 @@ export type PackType = {
     __v: number
 }
 type  SettingsType = {
+    page: number
+    pageCount: number
+    sort: string
+    search: string
     isMyPacks: boolean
     myPacks: PackType[]
 }
@@ -62,18 +66,26 @@ export type BaseResponseType = {
     token: string
     tokenDeathTime: number
 }
-
+export type getPacksPatamType = {
+    search?: string
+    min?: number
+    max?: number
+    sort?: string
+    page?: number
+    pageCount?: number
+    user_id?: string
+}
 export const packsAPI = {
-    getPacks() {
+    getPacks(data: getPacksPatamType) {
         return instance.get<CardPacksBase>('cards/pack', {
            params: {
-                // packName: data.packName,
-                // min: data.min,
-                // max: data.max,
-                // sortPacks: data.sortPacks,
-                // page: data.page,
-                // pageCount: data.pageCount,
-                // user_id: data.user_id
+                packName: data.search,
+                min: data.min,
+                max: data.max,
+                sortPacks: data.sort,
+                page: data.page,
+                pageCount: data.pageCount,
+                user_id: data.user_id
             }
         })
     },

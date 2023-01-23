@@ -1,13 +1,13 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {Button, ButtonGroup, IconButton, InputBase, Paper} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import Slider from "@material-ui/core/Slider";
 import RemoveIcon from "../../../assets/images/icons/Filter-Remove.png";
 import {Box, SettingsContainer, SliderContainer, Title, ToolContainer } from "./styes.settingsBar";
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
-import {showMyPacks} from "../packsReducer";
+import {searchPacks, showMyPacks} from "../packsReducer";
 import {useDispatch} from "react-redux/es/hooks/useDispatch";
-
+import useDebounce from '../../../common/hooks/UseDebounceHook';
 
 
 
@@ -35,6 +35,20 @@ export const InputSearch = ({title}: ToolPropsType) => {
 }
 
 export function CustomizedInputBase() {
+    const dispatch = useDispatch()
+    const [searchTerm, setSearchTerm] = useState('');
+    const search = useAppSelector(state=>state.packs.search)
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+
+    useEffect(()=>{
+        if (debouncedSearchTerm) {
+            dispatch(searchPacks({search: debouncedSearchTerm}))
+
+        } else {
+            dispatch(searchPacks({search: ''}))
+        }
+    },[debouncedSearchTerm])
     return (
         <Paper component="form">
             <IconButton type="submit"
@@ -42,6 +56,8 @@ export function CustomizedInputBase() {
                 <SearchIcon/>
             </IconButton>
             <InputBase
+                value={search}
+                onChange={e => setSearchTerm(e.target.value)}
                 placeholder="Provide your text"
                 inputProps={{'aria-label': 'search google maps'}}
             />
