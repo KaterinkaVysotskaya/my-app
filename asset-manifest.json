@@ -1,16 +1,22 @@
 {
   "files": {
-    "main.css": "/my-app/static/css/main.573c97e7.css",
-    "main.js": "/my-app/static/js/main.34a57abd.js",
+    "main.css": "/my-app/static/css/main.e3ca0be4.css",
+    "main.js": "/my-app/static/js/main.c4f19f5f.js",
     "static/js/787.28cb0dcd.chunk.js": "/my-app/static/js/787.28cb0dcd.chunk.js",
+    "static/media/mail.svg": "/my-app/static/media/mail.836e246556dd50d082cf05d8309583a6.svg",
+    "static/media/Back to Packs List.svg": "/my-app/static/media/Back to Packs List.4265199f6461f905a65efd01696ee332.svg",
     "static/media/it-incubator.svg": "/my-app/static/media/it-incubator.e042fc5e464c1f4b7cd73ec3c3d4542c.svg",
+    "static/media/Delete.svg": "/my-app/static/media/Delete.670cfda98219e29e5ea681a6c2b1d195.svg",
+    "static/media/Edit.svg": "/my-app/static/media/Edit.d8c15dca1815733c99dd3bf26cc8cab8.svg",
+    "static/media/teacher.svg": "/my-app/static/media/teacher.aacdaa377b12a5926d4fee4ef78bb9e0.svg",
     "index.html": "/my-app/index.html",
-    "main.573c97e7.css.map": "/my-app/static/css/main.573c97e7.css.map",
-    "main.34a57abd.js.map": "/my-app/static/js/main.34a57abd.js.map",
+    "static/media/arrow.svg": "/my-app/static/media/arrow.519110c32786a43bcb3957820cd9c116.svg",
+    "main.e3ca0be4.css.map": "/my-app/static/css/main.e3ca0be4.css.map",
+    "main.c4f19f5f.js.map": "/my-app/static/js/main.c4f19f5f.js.map",
     "787.28cb0dcd.chunk.js.map": "/my-app/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.573c97e7.css",
-    "static/js/main.34a57abd.js"
+    "static/css/main.e3ca0be4.css",
+    "static/js/main.c4f19f5f.js"
   ]
 }
