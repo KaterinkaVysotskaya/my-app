@@ -9,6 +9,7 @@ import Profile from "../../../features/profile/Profile";
 import CheckEmail from "../../../features/auth/CheckEmail/CheckEmail";
 import PrivateRoute from "../../utils/ProtectedRoute";
 import Packslist from "../../../features/packs/Packslist";
+import {CardsList} from "../../../features/cards/CardsList";
 
 export const PATH = {
     LOGIN: '/login',
@@ -17,7 +18,8 @@ export const PATH = {
     FORGOT_PASSWORD: '/forgot-password',
     SET_NEW_PASSWORD: '/set-new-password',
     CHECK_EMAIL: '/check-email',
-    PACKSLIST: '/packslist'
+    PACKSLIST: '/packslist',
+    CARDSLIST: '/cardlist'
 
 }
 
@@ -43,6 +45,13 @@ function Rout() {
                        element={
                            <PrivateRoute>
                                <Packslist />
+                           </PrivateRoute>
+                       }
+                />
+                <Route path={PATH.CARDSLIST}
+                       element={
+                           <PrivateRoute>
+                               <CardsList />
                            </PrivateRoute>
                        }
                 />

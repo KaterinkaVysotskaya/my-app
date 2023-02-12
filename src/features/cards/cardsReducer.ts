@@ -1,21 +1,18 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CardPacksBase, ChangedCardsPackType, NewCardsPackType, packsAPI, PackType} from "../../api/packs-api";
 import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {AppStoreType} from "../../app/store";
+import {AddCardType, cardsAPI, CardsBaseType, CardType, ChangedCardType} from "../../api/cards-api";
 
 
-
-export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, {dispatch, getState, rejectWithValue}) => {
+export const getCardsTC = createAsyncThunk('cards/getCards', async (param: {packId: string}, {dispatch, getState, rejectWithValue}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const state = getState() as AppStoreType
-            const {pageCount, page, sort, search, min, max} = state.packs
-            const res = await packsAPI.getPacks({pageCount, page, sort, search, min, max})
-
+            const res = await cardsAPI.getCards({cardsPack_id: param.packId})
+            console.log(res, 'res getCards')
             dispatch(setAppStatusAC({status: 'succeeded'}))
-            return {packs: res.data}
+            return {cards: res.data}
         } catch (error) {
             const e = error as Error | AxiosError
             if (axios.isAxiosError(e)) {
@@ -30,13 +27,13 @@ export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, {disp
     }
 )
 
-export const addPacksTC = createAsyncThunk('packs/addPacks', async (newCardsPack: NewCardsPackType, thunkAPI) => {
+export const addCardTC = createAsyncThunk('cards/addCards', async (AddCard: AddCardType, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const res = await packsAPI.addPacks(newCardsPack)
+            const res = await cardsAPI.addCard( AddCard)
             console.log(res, 'res')
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
-            return {newPack: res.data}
+            return {newCard: res.data}
         } catch (error) {
             const e = error as Error | AxiosError
             if (axios.isAxiosError(e)) {
@@ -50,14 +47,13 @@ export const addPacksTC = createAsyncThunk('packs/addPacks', async (newCardsPack
         }
     }
 )
-export const deletePacksTC = createAsyncThunk('packs/deletePacks', async (id: string, thunkAPI) => {
+export const deleteCardTC = createAsyncThunk('cards/deleteCard', async (id: string, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
 
         try {
             const state = thunkAPI.getState() as AppStoreType
-            const res = await packsAPI.deletePacks(id)
+            const res = await cardsAPI.deleteCard(id)
 
-            console.log(res, 'res')
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return {id}
         } catch (error) {
@@ -73,14 +69,14 @@ export const deletePacksTC = createAsyncThunk('packs/deletePacks', async (id: st
         }
     }
 )
-export const updatePacksTC = createAsyncThunk('packs/updatePacks', async (changedCardsPack: ChangedCardsPackType, thunkAPI) => {
+export const updateCardTC = createAsyncThunk('cards/updateCards', async (changedCard: ChangedCardType, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
 
         try {
-            const res = await packsAPI.updatePacks(changedCardsPack)
+            const res = await cardsAPI.updateCard(changedCard)
             console.log(res, 'res')
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
-            return {changedCardsPack}
+            return {updtedCard: res.data}
         } catch (error) {
             const e = error as Error | AxiosError
             if (axios.isAxiosError(e)) {
@@ -97,66 +93,45 @@ export const updatePacksTC = createAsyncThunk('packs/updatePacks', async (change
 
 const slice = createSlice({
     name: 'packs',
-    initialState: {} as CardPacksBase ,
+    initialState: {} as CardsBaseType ,
     reducers: {
-        setPage(state, action: PayloadAction<{page: number}>){
-            state.page = action.payload.page
-        },
-        setPageCount(state, action: PayloadAction<{pageCount: number}>) {
-            state.pageCount = action.payload.pageCount
-        },
-        showMyPacks(state, action: PayloadAction<{isMyPacks: boolean}>) {
-            state.isMyPacks = action.payload.isMyPacks
-            if(state.isMyPacks) {
-                // state.myPacks = state.cardPacks.filter(p=>p.user_id === profile.userProfile?._id)
-            }
-        },
-        searchPacks(state, action: PayloadAction<{search?: string, min?: number, max?: number}>) {
-
+        searchCards(state, action: PayloadAction<{search?: string,}>) {
             state.search = action.payload.search
-            state.min = action.payload.min
-            state.max = action.payload.max
         },
-        clearSettingsFilter(state) {
-            state.search = ''
-            state.min = state.minCardsCount
-            state.max = state.maxCardsCount
-        }
     },
     extraReducers: (builder) => {
-        builder.addCase(getPacksTC.fulfilled, (state, action) => {
+        builder.addCase(getCardsTC.fulfilled, (state, action) => {
                 if (action.payload)
-                    return action.payload.packs
+                    return action.payload.cards
+            console.log('action.payload.packs' , action.payload!.cards)
             }
         )
-        builder.addCase(addPacksTC.fulfilled, (state, action) => {
-                if (action.payload) {
-                    console.log({...action.payload.newPack.newCardsPack}, 'render')
-                    state.cardPacks.unshift({...action.payload.newPack.newCardsPack})
-                }
+        builder.addCase(addCardTC.fulfilled, (state, action) => {
+                if (action.payload)
+                    state.cards.unshift({...action.payload.newCard})
 
             }
         )
-        builder.addCase(deletePacksTC.fulfilled, (state, action) => {
-                const index = state.cardPacks.findIndex(p => p._id === action.payload!.id)
+        builder.addCase(deleteCardTC.fulfilled, (state, action) => {
+                const index = state.cards.findIndex(c => c._id === action.payload!.id)
                 if (index > -1) {
-                    state.cardPacks.splice(index, 1)
+                    state.cards.splice(index, 1)
                 }
             }
         )
-        builder.addCase(updatePacksTC.fulfilled, (state, action) => {
+        builder.addCase(updateCardTC.fulfilled, (state, action) => {
                 if (action.payload) {
-                    const index = state.cardPacks.findIndex(p => p._id === action.payload!.changedCardsPack._id)
-                    state.cardPacks[index].name = action.payload.changedCardsPack.name
+                    const index = state.cards.findIndex(c => c._id === action.payload!.updtedCard._id)
+                    state.cards[index] = action.payload.updtedCard
                 }
             }
         )
+
     }
 
 })
 
 
-export const packsReducer = slice.reducer
-export const {
-    setPage, setPageCount, showMyPacks, searchPacks, clearSettingsFilter
+export const cardsReducer = slice.reducer
+export const { searchCards
 } = slice.actions

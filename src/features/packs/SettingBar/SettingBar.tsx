@@ -1,20 +1,21 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import {Button, ButtonGroup, IconButton, InputBase, Paper} from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import React, {ChangeEvent, useEffect} from "react";
+import {Button, ButtonGroup} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import RemoveIcon from "../../../assets/images/icons/Filter-Remove.png";
-import {Box, SettingsContainer, SliderContainer, Title, ToolContainer } from "./styes.settingsBar";
+import {Box, SettingsContainer, SliderContainer, Title, ToolContainer} from "./styes.settingsBar";
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
-import {searchPacks, showMyPacks} from "../packsReducer";
+import {clearSettingsFilter, searchPacks, showMyPacks} from "../packsReducer";
 import {useDispatch} from "react-redux/es/hooks/useDispatch";
 import useDebounce from '../../../common/hooks/UseDebounceHook';
+import {Search} from "./Search";
 
 
 
 export const SettingsBar = () => {
+    const search = useAppSelector(state=>state.packs.search)
     return (
         <SettingsContainer>
-            <InputSearch title={'Search'}/>
+            <Search search={search} title={'Search'} searchTC={searchPacks}/>
             <ShowMyAllPacks title={'Show packs cards'}/>
             <SliderSettings title={'Number of cards'}/>
             <ResetButton/>
@@ -22,48 +23,13 @@ export const SettingsBar = () => {
     )
 }
 
-type ToolPropsType = {
+export type ToolPropsType = {
     title: string
-}
-export const InputSearch = ({title}: ToolPropsType) => {
-    return (
-        <ToolContainer width={'413px'}>
-            <Title>{title}</Title>
-            <CustomizedInputBase/>
-        </ToolContainer>
-    )
+    search?: string
+    searchTC?: any
+    width?: string
 }
 
-export function CustomizedInputBase() {
-    const dispatch = useDispatch()
-    const [searchTerm, setSearchTerm] = useState('');
-    const search = useAppSelector(state=>state.packs.search)
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-
-    useEffect(()=>{
-        if (debouncedSearchTerm) {
-            dispatch(searchPacks({search: debouncedSearchTerm}))
-
-        } else {
-            dispatch(searchPacks({search: ''}))
-        }
-    },[debouncedSearchTerm])
-    return (
-        <Paper component="form">
-            <IconButton type="submit"
-                        aria-label="search">
-                <SearchIcon/>
-            </IconButton>
-            <InputBase
-                value={search}
-                onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Provide your text"
-                inputProps={{'aria-label': 'search google maps'}}
-            />
-        </Paper>
-    );
-}
 
 export const ShowMyAllPacks = ({title}: ToolPropsType) => {
     const dispatch = useDispatch()
@@ -83,10 +49,24 @@ export const ShowMyAllPacks = ({title}: ToolPropsType) => {
 
 
 export const SliderSettings = ({title}: ToolPropsType) => {
-    const [value, setValue] = React.useState<number | number[]>([20, 37]);
     const packsData = useAppSelector(state => state.packs)
+    const [value, setValue] = React.useState<number | number[]>([0, 53]);
+
+    const dispatch = useDispatch()
+    const debouncedSearchTerm = useDebounce(value, 500);
+
+
+    useEffect(()=>{
+        if (debouncedSearchTerm) {
+            dispatch(searchPacks({min: debouncedSearchTerm[0], max: debouncedSearchTerm[1]}))
+
+        } else {
+            dispatch(searchPacks({search: ''}))
+        }
+    },[debouncedSearchTerm])
 
     const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+        console.log('newValue', newValue)
         setValue(newValue);
     };
 
@@ -94,12 +74,13 @@ export const SliderSettings = ({title}: ToolPropsType) => {
         return `${value}`;
     }
 
+
     return (
         <ToolContainer width={'413px'}>
             <Title>{title}</Title>
             <SliderContainer>
-                <Box>{packsData.minCardsCount}</Box>
-                <Slider
+                <Box>{packsData.min}</Box>
+                <Slider style={{margin: '0px 12px'}}
                     value={value}
                     onChange={handleChange}
                     valueLabelDisplay="auto"
@@ -108,7 +89,7 @@ export const SliderSettings = ({title}: ToolPropsType) => {
                     min={packsData.minCardsCount}
                     max={packsData.maxCardsCount}
                 />
-                <Box>{packsData.maxCardsCount}</Box>
+                <Box>{packsData.max}</Box>
             </SliderContainer>
 
         </ToolContainer>
@@ -117,8 +98,9 @@ export const SliderSettings = ({title}: ToolPropsType) => {
 
 
 export const ResetButton = () => {
+    const dispatch = useDispatch()
     return (
-        <Box>
+        <Box onClick={()=>dispatch(clearSettingsFilter())}>
             <img src={RemoveIcon} alt="filter-remove"/>
         </Box>
     )

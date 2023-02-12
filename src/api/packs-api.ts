@@ -31,12 +31,14 @@ export type PackType = {
     __v: number
 }
 type  SettingsType = {
-    page: number
-    pageCount: number
-    sort: string
-    search: string
-    isMyPacks: boolean
-    myPacks: PackType[]
+    min?: number
+    max?: number
+    page?: number
+    pageCount?: number
+    sort?: string
+    search?: string
+    isMyPacks?: boolean
+    myPacks?: PackType[]
 }
 export type CardPacksBase  = {
     cardPacks: PackType[]
