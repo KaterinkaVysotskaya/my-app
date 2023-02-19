@@ -14,11 +14,11 @@ export const GridContainer = styled(Grid)`
   border-radius: 2px;
 `
 export const StyledTitle = styled.h1`
-  right: 162px;
-  top: 35px;
   height: 32px;
   color: #000000;
   text-align: center;
+  padding: 2px;
+  position: relative;
 @include text($titleFontFamily, 600, 26 px, 32 px);
 `
 export const Form = styled(FormGroup)`

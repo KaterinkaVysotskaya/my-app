@@ -7,14 +7,24 @@ import {StyledTableCell, StyledTableRow} from "../../common/styles/tables.styles
 import TableBody from "@mui/material/TableBody";
 import Link from "@material-ui/core/Link";
 import {PATH} from "../../common/components/Routing/Routes";
-import learnIcon from "../../assets/images/icons/teacher.svg";
-import {deletePacksTC, updatePacksTC} from "../packs/packsReducer";
 import editIcon from "../../assets/images/icons/Edit.svg";
 import deleteIcon from "../../assets/images/icons/Delete.svg";
 import * as React from "react";
+import {useEffect} from "react";
+import {deleteCardTC, getCardsTC, setPack_ID, updateCardTC} from "./cardsReducer";
+import {useAppSelector} from "../../common/hooks/react-redux-hooks";
+import {useAppDispatch} from "../../app/store";
+import {Rating} from "@mui/material";
 
 export const CardsTable = () => {
-    return(
+    const search = useAppSelector(state => state.cards.search)
+    const cards = useAppSelector(state => state.cards.cards)
+    const packUserId = useAppSelector(state=>state.cards.packUserId)
+    const profileId = useAppSelector(state => state.profile.userProfile?._id)
+    const dispatch = useAppDispatch()
+    const pack_ID = useAppSelector(state=>state.cards.pack_ID)
+
+    return (
         <TableContainer component={Paper}>
             <Table width={650} aria-label="simple table">
                 <TableHead>
@@ -23,47 +33,49 @@ export const CardsTable = () => {
                         <StyledTableCell align="left">Answer</StyledTableCell>
                         <StyledTableCell align="left">Last Updated</StyledTableCell>
                         <StyledTableCell align="left">Grade</StyledTableCell>
-                        <StyledTableCell align="left"></StyledTableCell>
+                        <StyledTableCell align="left"> </StyledTableCell>
                     </TableRow>
                 </TableHead>
-                {/*<TableBody>*/}
-                {/*    {myPacks && showPacks*/}
-                {/*        .slice(packsData.page * rowsPerPage, packsData.page * rowsPerPage + rowsPerPage)*/}
-                {/*        .map((packs) => (*/}
-                {/*            <StyledTableRow key={packs._id}>*/}
-                {/*                <StyledTableCell align="left">*/}
-                {/*                    <Link href={PATH.CARDSLIST}>*/}
-                {/*                        {packs.name}*/}
-                {/*                    </Link>*/}
-                {/*                </StyledTableCell>*/}
-                {/*                <StyledTableCell align="left">*/}
-                {/*                    {packs.cardsCount}*/}
-                {/*                </StyledTableCell>*/}
-                {/*                <StyledTableCell align="left">{packs.updated}</StyledTableCell>*/}
-                {/*                <StyledTableCell align="left">{packs.user_name}</StyledTableCell>*/}
-                {/*                <StyledTableCell align="left">*/}
-                {/*                    <div style={{display: 'flex', width: '95px', justifyContent: 'space-between'}}>*/}
-                {/*                        <div><img src={learnIcon} alt="learnIcon"/></div>*/}
+                <TableBody>
+                    {cards && cards
+                        .map((cards) => (
+                            <StyledTableRow key={cards._id}>
+                                <StyledTableCell align="left">
+                                    <Link href={PATH.CARDSLIST}>
+                                        {cards.question}
+                                    </Link>
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {cards.answer}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {cards.updated}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    <Rating name="read-only" value={cards.grade} readOnly/>
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                    {packUserId === profileId &&
+                                        <div style={{display: 'flex', width: '95px', justifyContent: 'space-between'}}>
 
-                {/*                        {packs.user_id === profileId &&*/}
-                {/*                            <div onClick={() => {*/}
-                {/*                                const ChangedPack = {*/}
-                {/*                                    _id: packs._id,*/}
-                {/*                                    name: 'My updated pack'*/}
-                {/*                                }*/}
-                {/*                                dispatch(updatePacksTC(ChangedPack))*/}
-                {/*                            }}><img src={editIcon} alt="changeIcon"/></div>}*/}
-                {/*                        {packs.user_id === profileId &&*/}
-                {/*                            <div onClick={() => {*/}
-                {/*                                dispatch(deletePacksTC(packs._id))*/}
-                {/*                            }}><img src={deleteIcon} alt="deleteIcon"/></div>*/}
-                {/*                        }*/}
-                {/*                    </div>*/}
-                {/*                </StyledTableCell>*/}
+                                            <div onClick={() => {
+                                                const ChangedPack = {
+                                                    _id: cards._id,
+                                                    name: 'My updated pack'
+                                                }
+                                                dispatch(updateCardTC(ChangedPack))
+                                            }}><img src={editIcon} alt="changeIcon"/></div>
 
-                {/*            </StyledTableRow>*/}
-                {/*        ))}*/}
-                {/*</TableBody>*/}
+                                            <div onClick={() => {
+                                                dispatch(deleteCardTC(cards._id))
+                                            }}><img src={deleteIcon} alt="deleteIcon"/></div>
+
+                                        </div>}
+                                </StyledTableCell>
+
+                            </StyledTableRow>
+                        ))}
+                </TableBody>
             </Table>
         </TableContainer>
     )

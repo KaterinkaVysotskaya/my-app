@@ -19,7 +19,7 @@ export const PATH = {
     SET_NEW_PASSWORD: '/set-new-password',
     CHECK_EMAIL: '/check-email',
     PACKSLIST: '/packslist',
-    CARDSLIST: '/cardlist'
+    CARDSLIST: '/cardslist'
 
 }
 
@@ -48,13 +48,15 @@ function Rout() {
                            </PrivateRoute>
                        }
                 />
-                <Route path={PATH.CARDSLIST}
+
+                <Route path={PATH.CARDSLIST+'/*' }
                        element={
                            <PrivateRoute>
                                <CardsList />
                            </PrivateRoute>
                        }
                 />
+
                 <Route path={'*'}element={ <Error404/>}/>
             </Routes>
         </div>

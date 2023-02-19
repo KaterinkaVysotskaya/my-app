@@ -5,6 +5,7 @@ export  const ProfileData = styled.div`
   justify-content: space-between;
   width: 260px;
   align-items: center;
+  position: relative;
 `
 export const HeaderContainer = styled.div`
   height: 60px;

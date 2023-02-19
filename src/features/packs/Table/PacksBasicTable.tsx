@@ -18,6 +18,7 @@ import learnIcon from '../../../assets/images/icons/teacher.svg'
 import editIcon from '../../../assets/images/icons/Edit.svg'
 import deleteIcon from '../../../assets/images/icons/Delete.svg'
 import { StyledTableCell, StyledTableRow } from '../../../common/styles/tables.styles';
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 
 
 export const BasicTable = () => {
@@ -26,7 +27,7 @@ export const BasicTable = () => {
     const packs = useAppSelector(state => state.packs.cardPacks)
     const myPacks = packs && packs.filter(p => p.user_id === profileId)
     const showPacks = packsData.isMyPacks ? myPacks : packs
-
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
     // const [page, setPage] = React.useState(0);
@@ -41,6 +42,24 @@ export const BasicTable = () => {
         dispatch(setPageCount({pageCount: +event.target.value}));
         dispatch(setPage({page: 0}));
     };
+
+
+    function setURLSearchParam(key: string, value: string) {
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value);
+        window.history.pushState({ path: url.href }, '', url.href);
+    }
+    const goToCards = () =>{
+        navigate({
+            pathname: PATH.CARDSLIST,
+            search: '?pack_ID='
+        })
+    }
+    const pack_id = useParams()
+    const [searchParams, setSearchParams] = useSearchParams();
+    searchParams.get("pack_ID")
+    console.log('pack_id', pack_id)
+    console.log('searchParams', searchParams)
     return (
         <>
             <TableContainer component={Paper}>
@@ -59,10 +78,13 @@ export const BasicTable = () => {
                             .slice(packsData.page * rowsPerPage, packsData.page * rowsPerPage + rowsPerPage)
                             .map((packs) => (
                                 <StyledTableRow key={packs._id}>
-                                    <StyledTableCell align="left">
-                                       <Link href={PATH.CARDSLIST}>
+                                    <StyledTableCell align="left" onClick={()=>{
+                                        navigate({
+                                            pathname: PATH.CARDSLIST,
+                                            search: 'pack_ID='+ packs._id
+                                        })
+                                    }}>
                                         {packs.name}
-                                       </Link>
                                     </StyledTableCell>
                                     <StyledTableCell align="left">
                                         {packs.cardsCount}

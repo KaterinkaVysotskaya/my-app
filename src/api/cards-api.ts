@@ -32,6 +32,7 @@ type BaseResponseCardType = CardType & {
 }
 type SettingsType = {
     search?: string
+    pack_ID?: string | null
 }
 export type CardsBaseType = {
     cards: CardType[]

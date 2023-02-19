@@ -24,6 +24,7 @@ type ToolContainerProps = {
 export const ToolContainer = styled.div<ToolContainerProps>`
   display: flex;
   flex-direction: column;
+  padding: 30px 0px;
   width: ${(props) => props.width ? props.width : '127px'};
 `
 

@@ -42,9 +42,7 @@ function Packslist() {
     }
 
 useEffect(()=>{
-    // @ts-ignore
     dispatch(getPacksTC())
-
 },[search, page, pageCount, max, min])
     return (
         <StyledContainer>

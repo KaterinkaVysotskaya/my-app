@@ -30,7 +30,7 @@ export const getCardsTC = createAsyncThunk('cards/getCards', async (param: {pack
 export const addCardTC = createAsyncThunk('cards/addCards', async (AddCard: AddCardType, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const res = await cardsAPI.addCard( AddCard)
+            const res = await cardsAPI.addCard(AddCard )
             console.log(res, 'res')
             thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
             return {newCard: res.data}
@@ -92,11 +92,14 @@ export const updateCardTC = createAsyncThunk('cards/updateCards', async (changed
 )
 
 const slice = createSlice({
-    name: 'packs',
+    name: 'cards',
     initialState: {} as CardsBaseType ,
     reducers: {
         searchCards(state, action: PayloadAction<{search?: string,}>) {
             state.search = action.payload.search
+        },
+        setPack_ID(state, action: PayloadAction<{pack_ID?: string | null,}>) {
+            state.pack_ID = action.payload.pack_ID
         },
     },
     extraReducers: (builder) => {
@@ -133,5 +136,5 @@ const slice = createSlice({
 
 
 export const cardsReducer = slice.reducer
-export const { searchCards
+export const { searchCards, setPack_ID
 } = slice.actions
