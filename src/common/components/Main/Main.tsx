@@ -1,4 +1,4 @@
-import Routes from "../Routing/Routes";
+import Routes from "../../Routing/Routes";
 import React from "react";
 import styled from "styled-components";
 

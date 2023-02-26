@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import s from './Menu.module.css'
 import {Link} from "react-router-dom";
-import {PATH} from "../Routing/Routes";
+import {PATH} from "../../Routing/Routes";
 
 function Menu() {
     const [toggle, setToggle] = useState(false)

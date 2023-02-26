@@ -1,6 +1,6 @@
 import {Button} from "../reusableComponents/button/Button";
 import React from "react";
-import {PATH} from "../Routing/Routes";
+import {PATH} from "../../Routing/Routes";
 import {Link} from "@mui/material";
 import styled from "styled-components";
 
@@ -23,7 +23,7 @@ export const EmptyPack = () => {
     return (
         <EmptyPackBox>
             <div>This pack is empty. Click add new card to fill this pack</div>
-            <Link href={PATH.PACKSLIST}><Button width={'175px'} buttonname={'Add new card'} /></Link>
+            <Link href={PATH.PACKSLIST}><Button width={'175px'} buttonname={'Go to packlist'} /></Link>
         </EmptyPackBox>
     )
 }

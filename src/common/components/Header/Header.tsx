@@ -5,7 +5,7 @@ import {Button} from "../reusableComponents/button/Button";
 import userIcon from '../../../assets/images/ProfileImg/9311412861606062171-128.png'
 import Link from '@material-ui/core/Link';
 import {HeaderContainer, ProfileAvatar, ProfileData, ProfileName} from './Header.styles';
-import {PATH} from "../Routing/Routes";
+import {PATH} from "../../Routing/Routes";
 import {HeaderMode} from "./HeaderMode";
 
 

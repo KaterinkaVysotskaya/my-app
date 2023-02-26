@@ -10,7 +10,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Button} from "../../../common/components/reusableComponents/button/Button";
 import {Footer, ForgotPasswordLink, GridContainer, StyledInput, StyledLink , StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
-import {PATH} from "../../../common/components/Routing/Routes";
+import {PATH} from "../../../common/Routing/Routes";
 
 export type FormikErrorType = {
     email?: string
@@ -53,7 +53,7 @@ function SignIn() {
         },
     })
     if (isLoggedIn) {
-        return <Navigate to={'/Profile'}/>
+        return <Navigate to={PATH.PACKSLIST}/>
     }
     return <Grid container justifyContent={'center'}>
         <GridContainer item style={{justifyContent:"center"}}>

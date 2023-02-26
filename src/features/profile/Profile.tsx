@@ -10,7 +10,7 @@ import {useFormik} from "formik";
 import styled from "styled-components";
 import {Footer, GridContainer, StyledTitle} from "../../common/styles/FormStyles/Form.styles";
 import {Button} from "../../common/components/reusableComponents/button/Button";
-import editIcon from '../../assets/images/EditIcon/122705455016276482623764-128.png'
+import editIcon from '../../assets/images/icons/Edit.svg'
 import BackToPackListsButton
     from "../../common/components/reusableComponents/BackToPacksListButton/BackToPackListsButton";
 

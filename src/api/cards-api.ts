@@ -1,6 +1,6 @@
 import {instance} from "./instance";
 import {AxiosResponse} from "axios";
-import {BaseResponseType, CardPacksBase, ChangedCardsPackType, getPacksPatamType, NewCardsPackType} from "./packs-api";
+import {BaseResponseType, CardPacksBase, ChangedCardsPackType, getPacksParamType, NewCardsPackType} from "./packs-api";
 
 type GetCardsParamType = {
     cardAnswer?: string

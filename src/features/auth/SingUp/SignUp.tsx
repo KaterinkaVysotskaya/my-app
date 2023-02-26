@@ -16,7 +16,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Button} from "../../../common/components/reusableComponents/button/Button";
 import {Footer, GridContainer, StyledButton, StyledInput, StyledLink, StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
-import {PATH} from "../../../common/components/Routing/Routes";
+import {PATH} from "../../../common/Routing/Routes";
 
 
 type FormikErrorType = {

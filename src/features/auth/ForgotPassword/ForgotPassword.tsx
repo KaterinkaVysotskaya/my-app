@@ -16,7 +16,7 @@ import {
     Text
 } from '../../../common/styles/FormStyles/Form.styles';
 import styled from 'styled-components';
-import {PATH} from "../../../common/components/Routing/Routes";
+import {PATH} from "../../../common/Routing/Routes";
 
 export const InputForgotPassword = styled(StyledInput)`
   margin: 33px;

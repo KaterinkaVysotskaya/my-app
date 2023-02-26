@@ -1,15 +1,15 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Login from "../../../features/auth/SingIn/SignIn";
-import SignUp from "../../../features/auth/SingUp/SignUp";
-import Error404 from "../PageNotFound/Error404";
-import EnterNewPassword from "../../../features/auth/CreateNewPassword/EnterNewPassword";
-import ForgotPassword from "../../../features/auth/ForgotPassword/ForgotPassword";
-import Profile from "../../../features/profile/Profile";
-import CheckEmail from "../../../features/auth/CheckEmail/CheckEmail";
-import PrivateRoute from "../../utils/ProtectedRoute";
-import Packslist from "../../../features/packs/Packslist";
-import {CardsList} from "../../../features/cards/CardsList";
+import Login from "../../features/auth/SingIn/SignIn";
+import SignUp from "../../features/auth/SingUp/SignUp";
+import Error404 from "../components/PageNotFound/Error404";
+import EnterNewPassword from "../../features/auth/CreateNewPassword/EnterNewPassword";
+import ForgotPassword from "../../features/auth/ForgotPassword/ForgotPassword";
+import Profile from "../../features/profile/Profile";
+import CheckEmail from "../../features/auth/CheckEmail/CheckEmail";
+import PrivateRoute from "../utils/ProtectedRoute";
+import Packslist from "../../features/packs/Packslist";
+import {CardsList} from "../../features/cards/CardsList";
 
 export const PATH = {
     LOGIN: '/login',
@@ -21,7 +21,7 @@ export const PATH = {
     PACKSLIST: '/packslist',
     CARDSLIST: '/cardslist'
 
-}
+} as const
 
 function Rout() {
     return (

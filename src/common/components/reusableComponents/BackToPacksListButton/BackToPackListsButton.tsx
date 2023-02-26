@@ -2,7 +2,7 @@ import React from "react";
 import arrow from '../../../../assets/images/icons/arrow.svg'
 import back from '../../../../assets/images/icons/Back to Packs List.svg'
 import styled from "styled-components";
-import {PATH} from "../../Routing/Routes";
+import {PATH} from "../../../Routing/Routes";
 import { Link } from "@material-ui/core";
 
 export const BackButtonBlock = styled.div`

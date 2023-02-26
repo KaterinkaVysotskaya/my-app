@@ -3,28 +3,23 @@ import useDebounce from "../../hooks/UseDebounceHook";
 import {IconButton, InputBase, Paper} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {useAppDispatch} from "../../../app/store";
+import {getPacksTC, setSearchPacks} from "../../../features/packs/packsReducer";
+import {useAppSelector} from "../../hooks/react-redux-hooks";
 
 
 
-type SearchPropsType = {
-    search?: string
-    searchTC?: any
-}
-export function CustomizedInputBase( props: SearchPropsType) {
+export function CustomizedInputBase() {
     const dispatch = useAppDispatch()
-    const [searchTerm, setSearchTerm] = useState('');
+    const search = useAppSelector(state=>state.packs.search)
 
-    const debouncedSearchTerm = useDebounce(searchTerm, 700);
-
+    const debouncedSearchTerm = useDebounce(search, 700);
 
     useEffect(()=>{
         if (debouncedSearchTerm) {
-            dispatch(props.searchTC({search: debouncedSearchTerm}))
-
-        } else {
-            dispatch(props.searchTC({search: ''}))
+            dispatch(getPacksTC({packName: debouncedSearchTerm}));
         }
     },[debouncedSearchTerm])
+
     return (
         <Paper component="form">
             <IconButton type="submit"
@@ -32,8 +27,8 @@ export function CustomizedInputBase( props: SearchPropsType) {
                 <SearchIcon/>
             </IconButton>
             <InputBase
-                value={props.search}
-                onChange={e => setSearchTerm(e.target.value)}
+                value={search}
+                onChange={e => dispatch(setSearchPacks({search: e.target.value}))}
                 placeholder="Provide your text"
                 inputProps={{'aria-label': 'search google maps'}}
             />

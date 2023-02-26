@@ -34,7 +34,7 @@ export type RegisterResponseType = {
 }
 export type UpdateMeParamsType = {
     name: string
-    avatar: File | string // url or base64
+    avatar: string // url or base64
 }
 export type UpdateMeResponseType = {
     updatedUser: UserProfileType

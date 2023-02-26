@@ -1,18 +1,25 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CardPacksBase, ChangedCardsPackType, NewCardsPackType, packsAPI, PackType} from "../../api/packs-api";
+import {
+    CardPacksBase,
+    ChangedCardsPackType,
+    getPacksParamType,
+    NewCardsPackType,
+    packsAPI,
+    PackType
+} from "../../api/packs-api";
 import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {AppStoreType} from "../../app/store";
 
 
-
-export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, {dispatch, getState, rejectWithValue}) => {
+//todo: ts for params in getPacksTC
+export const getPacksTC = createAsyncThunk('packs/getPacks', async ({pageCount = 10, page = 1, packName, min, max}: getPacksParamType, {dispatch, getState, rejectWithValue}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const state = getState() as AppStoreType
-            const {pageCount, page, sort, search, min, max} = state.packs
-            const res = await packsAPI.getPacks({pageCount, page, sort, search, min, max})
+            //  const state = getState() as AppStoreType
+            // const {pageCount, page, sortBy, search, min, max} = state.packs
+            const res = await packsAPI.getPacks({page, pageCount, packName, min, max })
 
             dispatch(setAppStatusAC({status: 'succeeded'}))
             return {packs: res.data}
@@ -26,6 +33,9 @@ export const getPacksTC = createAsyncThunk('packs/getPacks', async (param, {disp
                 return rejectWithValue({errors: [e.message], fieldsErrors: undefined})
             }
             handleServerNetworkError(e, dispatch)
+        }
+        finally {
+            dispatch(setAppStatusAC({status: 'idle'}))
         }
     }
 )
@@ -47,6 +57,9 @@ export const addPacksTC = createAsyncThunk('packs/addPacks', async (newCardsPack
                 return thunkAPI.rejectWithValue({errors: [e.message], fieldsErrors: undefined})
             }
             handleServerNetworkError(e, thunkAPI.dispatch)
+        }
+        finally {
+            thunkAPI.dispatch(setAppStatusAC({status: 'idle'}))
         }
     }
 )
@@ -71,6 +84,9 @@ export const deletePacksTC = createAsyncThunk('packs/deletePacks', async (id: st
             }
             handleServerNetworkError(e, thunkAPI.dispatch)
         }
+        finally {
+            thunkAPI.dispatch(setAppStatusAC({status: 'idle'}))
+        }
     }
 )
 export const updatePacksTC = createAsyncThunk('packs/updatePacks', async (changedCardsPack: ChangedCardsPackType, thunkAPI) => {
@@ -91,31 +107,39 @@ export const updatePacksTC = createAsyncThunk('packs/updatePacks', async (change
                 return thunkAPI.rejectWithValue({errors: [e.message], fieldsErrors: undefined})
             }
             handleServerNetworkError(e, thunkAPI.dispatch)
+        } finally {
+            thunkAPI.dispatch(setAppStatusAC({status: 'idle'}))
         }
     }
 )
 
 const slice = createSlice({
     name: 'packs',
-    initialState: {} as CardPacksBase ,
+    initialState: {
+        cardPacks: [],
+        cardPacksTotalCount: 0, // количество колод
+        maxCardsCount: 53,
+        minCardsCount: 0,
+        page: 1,// выбранная страница
+        pageCount: 10,
+        search: '',
+        min: 0,
+        max: 53
+    } as CardPacksBase,
     reducers: {
-        setPage(state, action: PayloadAction<{page: number}>){
-            state.page = action.payload.page
-        },
-        setPageCount(state, action: PayloadAction<{pageCount: number}>) {
-            state.pageCount = action.payload.pageCount
-        },
-        showMyPacks(state, action: PayloadAction<{isMyPacks: boolean}>) {
+        showMyPacks(state, action: PayloadAction<{ isMyPacks: boolean }>) {
             state.isMyPacks = action.payload.isMyPacks
-            if(state.isMyPacks) {
+            if (state.isMyPacks) {
                 // state.myPacks = state.cardPacks.filter(p=>p.user_id === profile.userProfile?._id)
             }
         },
-        searchPacks(state, action: PayloadAction<{search?: string, min?: number, max?: number}>) {
-
+        setSearchPacks(state, action: PayloadAction<{ search?: string, min?: number, max?: number }>) {
             state.search = action.payload.search
             state.min = action.payload.min
             state.max = action.payload.max
+        },
+        sortByDate(state, action: PayloadAction<{ sortBy: string }>) {
+            state.sortBy = action.payload.sortBy
         },
         clearSettingsFilter(state) {
             state.search = ''
@@ -125,13 +149,19 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getPacksTC.fulfilled, (state, action) => {
-                if (action.payload)
-                    return action.payload.packs
+                if (action.payload) {
+                    state.cardPacks = action.payload.packs.cardPacks
+                    state.cardPacksTotalCount = action.payload.packs.cardPacksTotalCount // количество колод
+                    state.maxCardsCount = action.payload.packs.maxCardsCount
+                    state.minCardsCount = action.payload.packs.minCardsCount
+                    state.page = action.payload.packs.page// выбранная страница
+                    state.pageCount = action.payload.packs.pageCount
+                }
+
             }
         )
         builder.addCase(addPacksTC.fulfilled, (state, action) => {
                 if (action.payload) {
-                    console.log({...action.payload.newPack.newCardsPack}, 'render')
                     state.cardPacks.unshift({...action.payload.newPack.newCardsPack})
                 }
 
@@ -158,5 +188,8 @@ const slice = createSlice({
 
 export const packsReducer = slice.reducer
 export const {
-    setPage, setPageCount, showMyPacks, searchPacks, clearSettingsFilter
+    setSearchPacks,
+    clearSettingsFilter,
+    showMyPacks,
+    sortByDate
 } = slice.actions

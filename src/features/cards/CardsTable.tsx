@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import {StyledTableCell, StyledTableRow} from "../../common/styles/tables.styles";
 import TableBody from "@mui/material/TableBody";
 import Link from "@material-ui/core/Link";
-import {PATH} from "../../common/components/Routing/Routes";
+import {PATH} from "../../common/Routing/Routes";
 import editIcon from "../../assets/images/icons/Edit.svg";
 import deleteIcon from "../../assets/images/icons/Delete.svg";
 import * as React from "react";

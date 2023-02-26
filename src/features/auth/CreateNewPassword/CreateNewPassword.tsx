@@ -7,7 +7,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {setNewPassword} from "../authReducer";
 import {SmallContainer} from '../CheckEmail/CheckEmail';
 import {StyledButton, StyledInput, StyledTitle, Text} from '../../../common/styles/FormStyles/Form.styles';
-import {PATH} from "../../../common/components/Routing/Routes";
+import {PATH} from "../../../common/Routing/Routes";
 
 
 

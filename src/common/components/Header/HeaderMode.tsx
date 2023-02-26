@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {IconButton} from "@mui/material";
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import {PATH} from "../Routing/Routes";
+import {PATH} from "../../Routing/Routes";
 import Link from "@material-ui/core/Link";
 import {logoutTC} from "../../../features/auth/authReducer";
 import {useAppDispatch} from "../../../app/store";

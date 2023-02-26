@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {useDispatch} from "react-redux/es/hooks/useDispatch";
 import {StyledTitle} from "../../styles/FormStyles/Form.styles";
 import {Button} from "../reusableComponents/button/Button";
 import React, {useState} from "react";
@@ -20,7 +19,7 @@ export const HeaderPacksBlock = styled.div`
 `
 
 
-export const ListHeader = ({title, buttonName, onClick}: HeaderPacksType) => {
+export const ListHeader = React.memo(({title, buttonName, onClick}: HeaderPacksType) => {
     const packUserId = useAppSelector(state => state.cards.packUserId)
 
     const profileId = useAppSelector(state => state.profile.userProfile?._id)
@@ -41,4 +40,4 @@ export const ListHeader = ({title, buttonName, onClick}: HeaderPacksType) => {
             <Button width={'175px'} buttonname={buttonName} onClick={onClick}/>
         </HeaderPacksBlock>
     )
-}
+})

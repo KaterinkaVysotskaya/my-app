@@ -39,6 +39,8 @@ export const CardsList = () => {
         dispatch(getCardsTC({packId: pack_ID ? pack_ID : ''}))
     }, [search])
 
+
+    //todo: useCallback for addNewCardHandler, LearnToPackHandler
     return(
         <StyledContainer>
             <BackToPackListsButton/>
