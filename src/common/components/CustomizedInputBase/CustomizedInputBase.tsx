@@ -10,15 +10,15 @@ import {useAppSelector} from "../../hooks/react-redux-hooks";
 
 export function CustomizedInputBase() {
     const dispatch = useAppDispatch()
-    const search = useAppSelector(state=>state.packs.search)
+    const packName = useAppSelector(state=>state.packs.packName)
 
-    const debouncedSearchTerm = useDebounce(search, 700);
-
-    useEffect(()=>{
-        if (debouncedSearchTerm) {
-            dispatch(getPacksTC({packName: debouncedSearchTerm}));
-        }
-    },[debouncedSearchTerm])
+    // const debouncedSearchTerm = useDebounce(packName, 700);
+    //
+    // useEffect(()=>{
+    //     if (debouncedSearchTerm) {
+    //         dispatch(getPacksTC({packName: debouncedSearchTerm}));
+    //     }
+    // },[debouncedSearchTerm])
 
     return (
         <Paper component="form">
@@ -27,7 +27,7 @@ export function CustomizedInputBase() {
                 <SearchIcon/>
             </IconButton>
             <InputBase
-                value={search}
+                value={packName}
                 onChange={e => dispatch(setSearchPacks({search: e.target.value}))}
                 placeholder="Provide your text"
                 inputProps={{'aria-label': 'search google maps'}}

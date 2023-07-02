@@ -1,20 +1,28 @@
-import {useDispatch} from "react-redux/es/hooks/useDispatch";
 import {Title, ToolContainer} from "./styes.settingsBar";
 import {Button, ButtonGroup} from "@material-ui/core";
-import {showMyPacks} from "../packsReducer";
-import React, {useState} from "react";
+import React from "react";
 import {ToolPropsType} from "./SettingBar";
+import s from './ShowMyAllPacksButton.module.css'
 
-export const ShowMyAllPacks = ({title}: ToolPropsType) => {
-    const [packOwner, setPackOwner] = useState<'my' | 'all'>('all')
+export type setPackOwnerType = {
+    setPackOwner:(packOwner: 'my' | 'all') => void
+    packOwner: 'my' | 'all'
+}
+export const ShowMyAllPacks = ({title, ...props}: ToolPropsType & setPackOwnerType) => {
+    const onMyBtnHandler = ()=>{
+        props.setPackOwner('my')
+    }
+    const onAllBtnHandler = ()=>{
+        props.setPackOwner('all')
+    }
 
     return (
         <ToolContainer width={'196px'}>
             <Title>{title}</Title>
             <div>
-                <ButtonGroup color='primary' aria-label="outlined primary button group">
-                    <Button onClick={()=>setPackOwner('my')}>My</Button>
-                    <Button onClick={()=>setPackOwner('all')}>All</Button>
+                <ButtonGroup color={'inherit'} aria-label="outlined primary button group">
+                    <Button className={props.packOwner ==='my' ? s.active : ''} onClick={onMyBtnHandler}>My</Button>
+                    <Button className={props.packOwner ==='all' ? s.active : ''}  onClick={onAllBtnHandler}>All</Button>
                 </ButtonGroup>
             </div>
 

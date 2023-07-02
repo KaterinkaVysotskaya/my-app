@@ -11,7 +11,7 @@ import {CardsTable} from "./CardsTable";
 import {EmptyPack} from "../../common/components/EmptyPack/EmptyPack";
 
 export const CardsList = () => {
-    const pack_ID = useAppSelector(state=>state.cards.pack_ID)
+    const statePack_id = useAppSelector(state=>state.cards.statePack_id)
     const search = useAppSelector(state=>state.cards.search)
     const cardsData = useAppSelector(state=>state.cards)
     const cards = useAppSelector(state=>state.cards.cards)
@@ -19,8 +19,7 @@ export const CardsList = () => {
     const dispatch = useAppDispatch()
 
     const addCard = {
-            cardsPack_id: pack_ID ? pack_ID :
-                "",
+            cardsPack_id: statePack_id!,
             question: 'What is DOM?',
             answer: 'Document Object Model',
             grade: 5
@@ -35,8 +34,8 @@ export const CardsList = () => {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const pack_ID = params.get('pack_ID')
-        dispatch(setPack_ID({pack_ID: pack_ID}))
-        dispatch(getCardsTC({packId: pack_ID ? pack_ID : ''}))
+        dispatch(setPack_ID({statePack_id: pack_ID!}))
+        dispatch(getCardsTC({cardsPack_id: pack_ID! }))
     }, [search])
 
 
@@ -52,7 +51,8 @@ export const CardsList = () => {
             {cards && !cards.length
                 ? <EmptyPack/>
                 : <>
-                    <Search width={'100%'}
+                    <Search
+                        width={'100%'}
                         search={search}
                         title={'Search'}
                         searchTC={searchCards}

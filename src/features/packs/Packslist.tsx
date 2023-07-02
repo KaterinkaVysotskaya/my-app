@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {ListHeader} from "../../common/components/HeaderPackslist/HeaderPackslist";
 import {BasicTable} from './Table/PacksBasicTable';
 import {addPacksTC, getPacksTC} from "./packsReducer";
@@ -21,23 +21,17 @@ const newCardsPack = {
 function Packslist() {
 
     const dispatch = useAppDispatch()
+    const [packOwner, setPackOwner] = useState<'my' | 'all'>('all')
 
     const onClickHandler = useCallback(() => {
         dispatch(addPacksTC(newCardsPack))
-
-        // @ts-ignore
-        // dispatch(getCardsTC({packId: "63e6ad75cbbd6323340353fc"}))
-
-        // dispatch(updateCardTC({_id: "63e8cd3ad73a854b6845fcdd"}))
-        // @ts-ignore
-        // dispatch(deleteCardTC("63e8c663d73a854b6845fcd9"))
     }, [])
 
     return (
         <StyledContainer>
             <ListHeader buttonName={'Add new pack'} title={'Packs list'} onClick={onClickHandler}/>
-            <SettingsBar />
-            <BasicTable/>
+            <SettingsBar packOwner={packOwner} setPackOwner={setPackOwner} />
+            <BasicTable packOwner={packOwner}/>
         </StyledContainer>
     );
 }

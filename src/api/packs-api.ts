@@ -61,8 +61,8 @@ export type PackType = {
 type  SettingsType = {
     min?: number
     max?: number
-    sortBy?: string
-    search?: string
+    sortPacks?: string
+    packName?: string
     isMyPacks?: boolean
     // myPacks?: PackType[]
 }
@@ -98,7 +98,7 @@ export type getPacksParamType = {
     packName?: string
     min?: number
     max?: number
-    sortBy?: string
+    sortPacks?: string
     page?: number
     pageCount?: number
     user_id?: string

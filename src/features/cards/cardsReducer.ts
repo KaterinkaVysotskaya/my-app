@@ -3,13 +3,13 @@ import {setAppErrorAC, setAppStatusAC} from "../../app/appReducer";
 import {handleServerNetworkError} from "../../common/utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {AppStoreType} from "../../app/store";
-import {AddCardType, cardsAPI, CardsBaseType, CardType, ChangedCardType} from "../../api/cards-api";
+import {AddCardType, cardsAPI, CardsBaseType, CardType, ChangedCardType, GetCardsParamType} from "../../api/cards-api";
 
 
-export const getCardsTC = createAsyncThunk('cards/getCards', async (param: {packId: string}, {dispatch, getState, rejectWithValue}) => {
+export const getCardsTC = createAsyncThunk('cards/getCards', async (param: GetCardsParamType, {dispatch, getState, rejectWithValue}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            const res = await cardsAPI.getCards({cardsPack_id: param.packId})
+            const res = await cardsAPI.getCards({cardsPack_id: param.cardsPack_id })
             console.log(res, 'res getCards')
             dispatch(setAppStatusAC({status: 'succeeded'}))
             return {cards: res.data}
@@ -98,8 +98,8 @@ const slice = createSlice({
         searchCards(state, action: PayloadAction<{search?: string,}>) {
             state.search = action.payload.search
         },
-        setPack_ID(state, action: PayloadAction<{pack_ID?: string | null,}>) {
-            state.pack_ID = action.payload.pack_ID
+        setPack_ID(state, action: PayloadAction<{statePack_id: string}>) {
+            state.statePack_id = action.payload.statePack_id
         },
     },
     extraReducers: (builder) => {

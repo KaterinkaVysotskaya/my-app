@@ -14,12 +14,14 @@ import {AppStoreType} from "../../app/store";
 
 
 //todo: ts for params in getPacksTC
-export const getPacksTC = createAsyncThunk('packs/getPacks', async ({pageCount = 10, page = 1, packName, min, max}: getPacksParamType, {dispatch, getState, rejectWithValue}) => {
+
+export const getPacksTC = createAsyncThunk('packs/getPacks', async (param: {},{dispatch, getState, rejectWithValue}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
         try {
-            //  const state = getState() as AppStoreType
-            // const {pageCount, page, sortBy, search, min, max} = state.packs
-            const res = await packsAPI.getPacks({page, pageCount, packName, min, max })
+
+             const state = getState() as AppStoreType
+            const {pageCount, page, sortPacks, packName, min, max} = state.packs
+            const res = await packsAPI.getPacks({page, pageCount, packName, min, max, sortPacks })
 
             dispatch(setAppStatusAC({status: 'succeeded'}))
             return {packs: res.data}
@@ -122,9 +124,10 @@ const slice = createSlice({
         minCardsCount: 0,
         page: 1,// выбранная страница
         pageCount: 10,
-        search: '',
+        packName: '',
         min: 0,
-        max: 53
+        max: 53,
+        sortPacks: '0updated'
     } as CardPacksBase,
     reducers: {
         showMyPacks(state, action: PayloadAction<{ isMyPacks: boolean }>) {
@@ -133,16 +136,17 @@ const slice = createSlice({
                 // state.myPacks = state.cardPacks.filter(p=>p.user_id === profile.userProfile?._id)
             }
         },
-        setSearchPacks(state, action: PayloadAction<{ search?: string, min?: number, max?: number }>) {
-            state.search = action.payload.search
+        setSearchPacks(state, action: PayloadAction<{ search?: string, min?: number, max?: number,  }>) {
+            state.packName = action.payload.search
             state.min = action.payload.min
             state.max = action.payload.max
+
         },
-        sortByDate(state, action: PayloadAction<{ sortBy: string }>) {
-            state.sortBy = action.payload.sortBy
+        sortByDate(state, action: PayloadAction<{ sortPacks: string }>) {
+            state.sortPacks = action.payload.sortPacks
         },
         clearSettingsFilter(state) {
-            state.search = ''
+            state.packName = ''
             state.min = state.minCardsCount
             state.max = state.maxCardsCount
         }

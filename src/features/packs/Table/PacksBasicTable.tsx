@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppSelector} from '../../../common/hooks/react-redux-hooks';
-import {deletePacksTC, getPacksTC, updatePacksTC} from "../packsReducer";
+import {deletePacksTC, getPacksTC, sortByDate, updatePacksTC} from "../packsReducer";
 import {PATH} from "../../../common/Routing/Routes";
 import {useAppDispatch} from "../../../app/store";
 import {TablePagination} from "@mui/material";
@@ -17,21 +17,26 @@ import sortIcon from '../../../assets/images/icons/Polygon.svg'
 import {StyledTableCell, StyledTableRow} from '../../../common/styles/tables.styles';
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {useEffect} from "react";
+import useDebounce from "../../../common/hooks/UseDebounceHook";
 
 const ASC = '0'
 const DESC = '1'
 
-export const BasicTable = () => {
-    const search = useAppSelector(state => state.packs.search)
+type BasicTable = {
+    packOwner: 'my' | 'all'
+}
+export const BasicTable = (props: BasicTable ) => {
+    const packName = useAppSelector(state => state.packs.packName)
     const page = useAppSelector(state => state.packs.page)
     const pageCount = useAppSelector(state => state.packs.pageCount)
     const max = useAppSelector(state => state.packs.max)
     const min = useAppSelector(state => state.packs.min)
+    const sortPacks = useAppSelector(state => state.packs.sortPacks)
     const profileId = useAppSelector(state => state.profile.userProfile?._id)
     const packsData = useAppSelector(state => state.packs)
     const packs = useAppSelector(state => state.packs.cardPacks)
-    const myPacks = packs && packs.filter(p => p.user_id === profileId)
-    const showPacks = packsData.isMyPacks ? myPacks : packs
+
+    // const showPacks = packsData.isMyPacks ? myPacks : packs
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const pack_ID = useParams()
@@ -58,19 +63,24 @@ export const BasicTable = () => {
     const handleChangePage = (event: unknown, page: number) => {
         //rowsPerPage this is pageCount
         console.log('handleChangePage: ', page)
-        dispatch(getPacksTC({page: page, pageCount: rowsPerPage}));
+        dispatch(getPacksTC({}
+            // {page: page, pageCount: rowsPerPage}
+        ));
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         // setRowsPerPage(parseInt(event.target.value, 10));
         console.log('setRowsPerPage: ',+event.target.value )
         setRowsPerPage(+event.target.value)
-        dispatch(getPacksTC({page, pageCount: +event.target.value}));
+        dispatch(getPacksTC({}
+            // {page, pageCount: +event.target.value}
+        ));
     };
-
+    const myPacks = packs && packs.filter(p => p.user_id === profileId)
+    const packsForMap = props.packOwner === 'my' ? myPacks : packs
 
     const onSortHandler = () => {
-        // dispatch(setPackTC({sortPacks: sortBy === DESC ? '0updated' : '1updated'}))
+        dispatch(sortByDate({sortPacks: '0updated'}))
         // dispatch(sortByDateAC({sortBy === DESC ? DESC : ASC}))
     }
 
@@ -96,9 +106,10 @@ export const BasicTable = () => {
         setRowsPerPage(packsData.pageCount)
     }, [packsData.pageCount])
 
+    const debouncedSearchTerm = useDebounce(packName, 700);
     useEffect(() => {
         dispatch(getPacksTC({}))
-    }, [])
+    }, [pageCount, page, debouncedSearchTerm, min, max, sortPacks])
 
 
     // useEffect(()=>{
@@ -128,9 +139,10 @@ export const BasicTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {packs.map((pack) => (
+                        {
+                            packsForMap.map((pack) => (
                                 <StyledTableRow key={pack._id}>
-                                    <StyledTableCell align="left" onClick={() => navigateHandler(pack._id)}>
+                                    <StyledTableCell align="left" onClick={() => navigateHandler(pack._id)} style={{cursor: 'pointer'}}>
                                         {pack.name}
                                     </StyledTableCell>
                                     <StyledTableCell align="left">
@@ -143,19 +155,19 @@ export const BasicTable = () => {
                                     <StyledTableCell align="left">
                                         <div style={{display: 'flex', width: '95px', justifyContent: 'space-between'}}>
                                             <div>
-                                                <img src={learnIcon} alt="learnIcon"/>
+                                                <img src={learnIcon} alt="learnIcon" style={{cursor: 'pointer'}}/>
                                             </div>
 
                                             {
                                                 pack.user_id === profileId &&
                                                 <div onClick={() => changedPack(pack._id)}>
-                                                    <img src={editIcon} alt="changeIcon"/>
+                                                    <img src={editIcon} alt="changeIcon" style={{cursor: 'pointer'}}/>
                                                 </div>
                                             }
                                             {
                                                 pack.user_id === profileId &&
                                                 <div onClick={() => deletePack(pack._id)}>
-                                                    <img src={deleteIcon} alt="deleteIcon"/>
+                                                    <img src={deleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}}/>
                                                 </div>
                                             }
                                         </div>

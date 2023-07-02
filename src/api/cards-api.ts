@@ -2,7 +2,7 @@ import {instance} from "./instance";
 import {AxiosResponse} from "axios";
 import {BaseResponseType, CardPacksBase, ChangedCardsPackType, getPacksParamType, NewCardsPackType} from "./packs-api";
 
-type GetCardsParamType = {
+export type GetCardsParamType = {
     cardAnswer?: string
     cardQuestion?: string
     cardsPack_id: string
@@ -32,7 +32,7 @@ type BaseResponseCardType = CardType & {
 }
 type SettingsType = {
     search?: string
-    pack_ID?: string | null
+    statePack_id?: string
 }
 export type CardsBaseType = {
     cards: CardType[]

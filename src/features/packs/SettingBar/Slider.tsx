@@ -1,18 +1,22 @@
 import {useAppSelector} from "../../../common/hooks/react-redux-hooks";
 import useDebounce from "../../../common/hooks/UseDebounceHook";
 import React, {useEffect} from "react";
-import {getPacksTC} from "../packsReducer";
+import {getPacksTC, setSearchPacks} from "../packsReducer";
 import {Box, SliderContainer, Title, ToolContainer} from "./styes.settingsBar";
 import Slider from '@mui/material/Slider';
 import {ToolPropsType} from "./SettingBar";
 import {useAppDispatch} from "../../../app/store";
 
 const minDistance = 10;
+export type  SliderPropsType = {
+    value1: number[]
+    setValue1: (value1: number[]) => void
+}
 
-export const SliderSettings = ({title}: ToolPropsType) => {
+export const SliderSettings = ({title, value1, setValue1}: ToolPropsType & SliderPropsType) => {
     const packsData = useAppSelector(state => state.packs)
     const isLoggedIn = useAppSelector(state=>state.auth.isLoggedIn)
-    const [value1, setValue1] = React.useState<number[]>([packsData.minCardsCount, packsData.maxCardsCount]);
+
     const dispatch = useAppDispatch()
 
     const debouncedSearchTerm = useDebounce(value1, 1000);
@@ -37,7 +41,7 @@ export const SliderSettings = ({title}: ToolPropsType) => {
     useEffect(()=>{
         if (isLoggedIn) {
             if (debouncedSearchTerm[0] !== packsData.minCardsCount && debouncedSearchTerm[1] !== packsData.maxCardsCount) {
-                dispatch(getPacksTC({min: debouncedSearchTerm[0], max: debouncedSearchTerm[1]}));
+                dispatch(setSearchPacks({min: debouncedSearchTerm[0], max: debouncedSearchTerm[1]}));
             }
             // else {
             //     dispatch(searchPacks({search: ''}))
